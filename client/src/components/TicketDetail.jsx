@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PriorityBadge, StatusBadge, OverdueBadge } from './Badge';
 import { updateTicket, deleteTicket } from '../api';
+import { AlertTriangle, X } from 'lucide-react';
 
 export function TicketDetail({ ticketId, agents, currentUser, onClose, onTicketUpdated, onTicketDeleted }) {
   const [ticket, setTicket] = useState(null);
@@ -106,7 +107,7 @@ export function TicketDetail({ ticketId, agents, currentUser, onClose, onTicketU
             <h2 className="drawer-title">{ticket?.title || 'Loading Ticket...'}</h2>
           </div>
           <button className="drawer-close" onClick={onClose} title="Close drawer">
-            ✕
+            <X size={17} aria-hidden="true" />
           </button>
         </div>
 
@@ -118,7 +119,7 @@ export function TicketDetail({ ticketId, agents, currentUser, onClose, onTicketU
           </div>
         ) : error ? (
           <div className="drawer-body">
-            <div style={{ color: 'var(--danger)', marginBottom: '16px' }}>⚠️ {error}</div>
+            <div style={{ color: 'var(--danger)', marginBottom: '16px' }}><AlertTriangle size={14} aria-hidden="true" /> {error}</div>
             <button className="btn btn-secondary" onClick={onClose}>Close</button>
           </div>
         ) : (
@@ -258,11 +259,11 @@ export function TicketDetail({ ticketId, agents, currentUser, onClose, onTicketU
                       onChange={(e) => setEditForm({ ...editForm, priority: e.target.value })}
                       className="form-select"
                     >
-                      <option value="critical">⚡ Critical (1h SLA)</option>
-                      <option value="urgent">🔥 Urgent (2h SLA)</option>
-                      <option value="high">🟠 High (4h SLA)</option>
-                      <option value="normal">🔵 Normal (1 day SLA)</option>
-                      <option value="low">⚪ Low (3 days SLA)</option>
+                      <option value="critical">Critical (1h SLA)</option>
+                      <option value="urgent">Urgent (2h SLA)</option>
+                      <option value="high">High (4h SLA)</option>
+                      <option value="normal">Normal (1 day SLA)</option>
+                      <option value="low">Low (3 days SLA)</option>
                     </select>
                   </div>
 

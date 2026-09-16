@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createTicket } from '../api';
+import { AlertTriangle, X } from 'lucide-react';
 
 export function CreateTicketModal({ agents, currentUser, onClose, onTicketCreated }) {
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ export function CreateTicketModal({ agents, currentUser, onClose, onTicketCreate
         <div className="modal-header">
           <h2 className="modal-title">Log New Support Ticket</h2>
           <button className="drawer-close" onClick={onClose} title="Close">
-            ✕
+            <X size={17} aria-hidden="true" />
           </button>
         </div>
 
@@ -48,7 +49,7 @@ export function CreateTicketModal({ agents, currentUser, onClose, onTicketCreate
           <div className="modal-body">
             {error && (
               <div style={{ color: 'var(--danger)', marginBottom: '16px', fontSize: '13px' }}>
-                ⚠️ {error}
+                <AlertTriangle size={14} aria-hidden="true" /> {error}
               </div>
             )}
 
@@ -75,11 +76,11 @@ export function CreateTicketModal({ agents, currentUser, onClose, onTicketCreate
                   onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
                   className="form-select"
                 >
-                  <option value="critical">⚡ Critical (1h SLA)</option>
-                  <option value="urgent">🔥 Urgent (2h SLA)</option>
-                  <option value="high">🟠 High (4h SLA)</option>
-                  <option value="normal">🔵 Normal (1 day SLA)</option>
-                  <option value="low">⚪ Low (3 days SLA)</option>
+                  <option value="critical">Critical (1h SLA)</option>
+                  <option value="urgent">Urgent (2h SLA)</option>
+                  <option value="high">High (4h SLA)</option>
+                  <option value="normal">Normal (1 day SLA)</option>
+                  <option value="low">Low (3 days SLA)</option>
                 </select>
                 <div className="form-hint">
                   {formData.priority === 'critical' && '1 hour response deadline'}

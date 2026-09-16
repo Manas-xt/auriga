@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchStats } from '../api';
 import { PriorityBadge } from './Badge';
+import { ArrowRight, Zap } from 'lucide-react';
 
 export function Dashboard({ onNavigateToQueue, onCreateTicketClick }) {
   const [stats, setStats] = useState(null);
@@ -114,7 +115,7 @@ export function Dashboard({ onNavigateToQueue, onCreateTicketClick }) {
         {/* Priority Engine Rules */}
         <div className="table-container" style={{ padding: 'var(--sp-5)' }}>
           <h3 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '16px', color: 'var(--ink)' }}>
-            ⚡ Urgency Algorithm Mechanics
+            <Zap size={15} aria-hidden="true" /> Urgency Algorithm Mechanics
           </h3>
 
           <div style={{ fontSize: '13px', color: 'var(--ink-muted)', lineHeight: 1.6 }}>
@@ -137,7 +138,7 @@ export function Dashboard({ onNavigateToQueue, onCreateTicketClick }) {
               style={{ marginTop: '20px' }}
               onClick={() => onNavigateToQueue({ status: 'active' })}
             >
-              View Priority Queue →
+              View Priority Queue <ArrowRight size={14} aria-hidden="true" />
             </button>
           </div>
         </div>

@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { loadDb } = require('./db');
+const { loadDb, getStore, saveDb } = require('./db');
 const { seed } = require('./seed');
+const { runOverdueEscalation: applyOverdueEscalation } = require('./utils/escalateOverdue');
 const ticketRoutes = require('./routes/tickets');
 const agentRoutes = require('./routes/agents');
 
@@ -35,6 +36,21 @@ app.get('/api/health', (req, res) => {
 // Initialize DB and seed
 loadDb();
 seed();
+
+function runOverdueEscalation() {
+  const store = getStore();
+  const runAt = new Date().toISOString();
+  const changes = applyOverdueEscalation(store.tickets, new Date(runAt));
+  store.escalation_last_run_at = runAt;
+  if (changes.length > 0) {
+    store.escalation_log = [...(store.escalation_log || []), ...changes].slice(-500);
+    console.log(`Escalated ${changes.length} overdue ticket(s).`);
+  }
+  saveDb();
+}
+
+runOverdueEscalation();
+setInterval(runOverdueEscalation, 60 * 1000);
 
 app.listen(PORT, () => {
   console.log(`\n🎫 Helpdesk API running at http://localhost:${PORT}`);

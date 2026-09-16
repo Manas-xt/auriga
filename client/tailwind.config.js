@@ -10,48 +10,48 @@ export default {
       colors: {
         brand: {
           DEFAULT: '#5e6ad2',
-          hover: '#4f5bc4',
-          active: '#454fae',
-          soft: '#eef0ff',
-          darkSoft: '#202541'
+          hover: '#828fff',
+          active: '#5e69d1',
+          soft: '#1c1e35',
+          darkSoft: '#1c1e35'
         },
         canvas: {
-          light: '#f7f8fa',
-          dark: '#0b0c0e'
+          light: '#f7f8f8',
+          dark: '#010102'
         },
         surface: {
-          1: '#ffffff',
-          2: '#f9fafb',
-          3: '#f1f3f5',
-          dark1: '#111315',
-          dark2: '#17191c',
-          dark3: '#1d2024'
+          1: '#0f1011',
+          2: '#141516',
+          3: '#18191a',
+          dark1: '#0f1011',
+          dark2: '#141516',
+          dark3: '#18191a'
         },
         ink: {
-          DEFAULT: '#17181a',
-          muted: '#5f6368',
-          subtle: '#7b8088',
-          disabled: '#a5a9b0',
-          dark: '#f5f7f8',
-          darkMuted: '#b1b6be',
-          darkSubtle: '#858b94'
+          DEFAULT: '#f7f8f8',
+          muted: '#d0d6e0',
+          subtle: '#8a8f98',
+          disabled: '#62666d',
+          dark: '#f7f8f8',
+          darkMuted: '#d0d6e0',
+          darkSubtle: '#8a8f98'
         },
         border: {
-          DEFAULT: '#e3e5e8',
-          strong: '#d0d4d9',
-          dark: '#282c31',
-          darkStrong: '#383d44'
+          DEFAULT: '#23252a',
+          strong: '#34343a',
+          dark: '#23252a',
+          darkStrong: '#34343a'
         },
         helpdesk: {
-          success: '#16803c',
-          warning: '#a15c00',
-          danger: '#c62828',
-          info: '#1769aa'
+          success: '#4cb782',
+          warning: '#f2c94c',
+          danger: '#eb5757',
+          info: '#4ea7fc'
         }
       },
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        mono: ['SF Mono', 'Fira Code', 'Consolas', 'monospace']
+        sans: ['Inter', 'SF Pro Display', '-apple-system', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'SF Mono', 'Menlo', 'monospace']
       },
       borderRadius: {
         'xs': '4px',

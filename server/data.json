@@ -21,13 +21,13 @@
       "title": "Server room UPS failure — all systems at risk",
       "description": "The main UPS in Server Room A is showing critical battery failure. All production servers could go down within minutes.",
       "priority": "critical",
-      "status": "open",
+      "status": "resolved",
       "customer_name": "Anil Gupta",
       "customer_email": "anil@techcorp.com",
       "assigned_to": "6158e2bd-9dd2-4108-b800-1155be8e7e90",
       "created_at": "2026-09-16T06:28:47.375Z",
-      "updated_at": "2026-09-16T06:28:47.375Z",
-      "resolved_at": null,
+      "updated_at": "2026-09-16T10:34:23.937Z",
+      "resolved_at": "2026-09-16T10:34:23.937Z",
       "sla_deadline": "2026-09-16T07:28:47.375Z"
     },
     {
@@ -35,13 +35,13 @@
       "title": "CEO laptop won't boot before board meeting",
       "description": "CEO's laptop shows blue screen on startup. Board meeting starts in 1 hour. Needs immediate attention.",
       "priority": "urgent",
-      "status": "open",
+      "status": "resolved",
       "customer_name": "Vikram Mehta",
       "customer_email": "vikram@acme.com",
       "assigned_to": "6158e2bd-9dd2-4108-b800-1155be8e7e90",
       "created_at": "2026-09-16T04:28:47.375Z",
-      "updated_at": "2026-09-16T04:28:47.375Z",
-      "resolved_at": null,
+      "updated_at": "2026-09-16T10:52:55.949Z",
+      "resolved_at": "2026-09-16T10:52:55.949Z",
       "sla_deadline": "2026-09-16T06:28:47.375Z"
     },
     {
@@ -49,12 +49,12 @@
       "title": "Email server down — no one can send emails",
       "description": "Exchange server is not responding. Entire company cannot send or receive emails.",
       "priority": "urgent",
-      "status": "in-progress",
+      "status": "open",
       "customer_name": "Sneha Patel",
       "customer_email": "sneha@globex.com",
       "assigned_to": "5e5cf9b5-753e-497e-9c31-ce0ca7217c51",
       "created_at": "2026-09-16T05:28:47.375Z",
-      "updated_at": "2026-09-16T05:28:47.375Z",
+      "updated_at": "2026-09-16T10:53:02.343Z",
       "resolved_at": null,
       "sla_deadline": "2026-09-16T07:28:47.375Z"
     },
@@ -62,13 +62,13 @@
       "id": "TK-FECCBE2D",
       "title": "VPN not connecting for remote team",
       "description": "The entire remote development team (15 people) cannot connect to VPN since this morning.",
-      "priority": "high",
-      "status": "open",
+      "priority": "urgent",
+      "status": "closed",
       "customer_name": "Deepak Joshi",
       "customer_email": "deepak@innovate.io",
       "assigned_to": "5e5cf9b5-753e-497e-9c31-ce0ca7217c51",
       "created_at": "2026-09-16T03:28:47.375Z",
-      "updated_at": "2026-09-16T03:28:47.375Z",
+      "updated_at": "2026-09-16T10:52:58.190Z",
       "resolved_at": null,
       "sla_deadline": "2026-09-16T07:28:47.375Z"
     },
@@ -76,13 +76,13 @@
       "id": "TK-A580CE77",
       "title": "Printer on 3rd floor not working",
       "description": "The shared printer on the 3rd floor is showing paper jam error but there is no paper jam.",
-      "priority": "normal",
+      "priority": "urgent",
       "status": "open",
       "customer_name": "Meena Reddy",
       "customer_email": "meena@techcorp.com",
       "assigned_to": null,
       "created_at": "2026-09-15T21:28:47.375Z",
-      "updated_at": "2026-09-15T21:28:47.375Z",
+      "updated_at": "2026-09-16T10:22:50.869Z",
       "resolved_at": null,
       "sla_deadline": "2026-09-16T05:28:47.375Z"
     },
@@ -91,12 +91,12 @@
       "title": "Production database showing corruption errors",
       "description": "MySQL production database throwing corruption errors on the orders table.",
       "priority": "critical",
-      "status": "open",
+      "status": "closed",
       "customer_name": "Rajesh Iyer",
       "customer_email": "rajesh@dataflow.com",
       "assigned_to": "6158e2bd-9dd2-4108-b800-1155be8e7e90",
       "created_at": "2026-09-16T09:13:47.375Z",
-      "updated_at": "2026-09-16T09:13:47.375Z",
+      "updated_at": "2026-09-16T10:38:02.604Z",
       "resolved_at": null,
       "sla_deadline": "2026-09-16T10:13:47.375Z"
     },
@@ -146,13 +146,13 @@
       "id": "TK-B2F3F668",
       "title": "Wi-Fi dropping intermittently in Building B",
       "description": "Multiple reports of Wi-Fi disconnections in Building B, floors 2-4. Affecting ~50 employees.",
-      "priority": "high",
+      "priority": "urgent",
       "status": "open",
       "customer_name": "Sunita Rao",
       "customer_email": "sunita@techcorp.com",
       "assigned_to": null,
       "created_at": "2026-09-16T06:28:47.375Z",
-      "updated_at": "2026-09-16T06:28:47.375Z",
+      "updated_at": "2026-09-16T10:28:50.923Z",
       "resolved_at": null,
       "sla_deadline": "2026-09-16T10:28:47.375Z"
     },
@@ -356,13 +356,13 @@
       "id": "TK-EF60FEDF",
       "title": "Network printer showing offline but is powered on",
       "description": "HP LaserJet on 5th floor shows as offline on everyone's machines.",
-      "priority": "normal",
+      "priority": "urgent",
       "status": "open",
       "customer_name": "Suresh Babu",
       "customer_email": "suresh@techcorp.com",
       "assigned_to": null,
       "created_at": "2026-09-16T02:28:47.375Z",
-      "updated_at": "2026-09-16T02:28:47.375Z",
+      "updated_at": "2026-09-16T10:29:50.925Z",
       "resolved_at": null,
       "sla_deadline": "2026-09-16T10:28:47.375Z"
     },
@@ -370,15 +370,39 @@
       "id": "TK-1A0E8A40",
       "title": "Request to set up new meeting room AV system",
       "description": "New meeting room on 4th floor needs projector, webcam, speaker system.",
-      "priority": "low",
+      "priority": "urgent",
       "status": "open",
       "customer_name": "Facilities Team",
       "customer_email": "facilities@techcorp.com",
       "assigned_to": null,
       "created_at": "2026-09-15T09:28:47.375Z",
-      "updated_at": "2026-09-15T09:28:47.375Z",
+      "updated_at": "2026-09-16T10:56:12.146Z",
       "resolved_at": null,
-      "sla_deadline": "2026-09-16T09:28:47.375Z"
+      "sla_deadline": "2026-09-16T09:28:47.375Z",
+      "escalated": true,
+      "escalations": [
+        {
+          "ticket_id": "TK-1A0E8A40",
+          "from": "low",
+          "to": "normal",
+          "at": "2026-09-16T10:55:06.341Z",
+          "reason": "SLA breached by 86m"
+        },
+        {
+          "ticket_id": "TK-1A0E8A40",
+          "from": "normal",
+          "to": "high",
+          "at": "2026-09-16T10:56:06.356Z",
+          "reason": "SLA breached by 87m"
+        },
+        {
+          "ticket_id": "TK-1A0E8A40",
+          "from": "high",
+          "to": "urgent",
+          "at": "2026-09-16T10:56:12.146Z",
+          "reason": "SLA breached by 87m"
+        }
+      ]
     },
     {
       "id": "TK-AA5595ED",
@@ -412,15 +436,39 @@
       "id": "TK-E7F9DA22",
       "title": "Old laptop needs to be decommissioned",
       "description": "Employee left the company 2 weeks ago. Their laptop needs to be wiped and stored.",
-      "priority": "low",
+      "priority": "urgent",
       "status": "in-progress",
       "customer_name": "HR Department",
       "customer_email": "hr@techcorp.com",
       "assigned_to": null,
       "created_at": "2026-09-14T21:28:47.375Z",
-      "updated_at": "2026-09-16T09:51:51.727Z",
+      "updated_at": "2026-09-16T10:56:12.146Z",
       "resolved_at": null,
-      "sla_deadline": "2026-09-15T21:28:47.375Z"
+      "sla_deadline": "2026-09-15T21:28:47.375Z",
+      "escalated": true,
+      "escalations": [
+        {
+          "ticket_id": "TK-E7F9DA22",
+          "from": "low",
+          "to": "normal",
+          "at": "2026-09-16T10:55:06.341Z",
+          "reason": "SLA breached by 806m"
+        },
+        {
+          "ticket_id": "TK-E7F9DA22",
+          "from": "normal",
+          "to": "high",
+          "at": "2026-09-16T10:56:06.356Z",
+          "reason": "SLA breached by 807m"
+        },
+        {
+          "ticket_id": "TK-E7F9DA22",
+          "from": "high",
+          "to": "urgent",
+          "at": "2026-09-16T10:56:12.146Z",
+          "reason": "SLA breached by 807m"
+        }
+      ]
     },
     {
       "id": "TK-9C166B79",
@@ -435,6 +483,51 @@
       "updated_at": "2026-09-15T23:28:47.375Z",
       "resolved_at": null,
       "sla_deadline": "2026-09-16T23:28:47.375Z"
+    }
+  ],
+  "escalation_last_run_at": "2026-09-16T10:57:12.151Z",
+  "escalation_log": [
+    {
+      "ticket_id": "TK-1A0E8A40",
+      "from": "low",
+      "to": "normal",
+      "at": "2026-09-16T10:55:06.341Z",
+      "reason": "SLA breached by 86m"
+    },
+    {
+      "ticket_id": "TK-E7F9DA22",
+      "from": "low",
+      "to": "normal",
+      "at": "2026-09-16T10:55:06.341Z",
+      "reason": "SLA breached by 806m"
+    },
+    {
+      "ticket_id": "TK-1A0E8A40",
+      "from": "normal",
+      "to": "high",
+      "at": "2026-09-16T10:56:06.356Z",
+      "reason": "SLA breached by 87m"
+    },
+    {
+      "ticket_id": "TK-E7F9DA22",
+      "from": "normal",
+      "to": "high",
+      "at": "2026-09-16T10:56:06.356Z",
+      "reason": "SLA breached by 807m"
+    },
+    {
+      "ticket_id": "TK-1A0E8A40",
+      "from": "high",
+      "to": "urgent",
+      "at": "2026-09-16T10:56:12.146Z",
+      "reason": "SLA breached by 87m"
+    },
+    {
+      "ticket_id": "TK-E7F9DA22",
+      "from": "high",
+      "to": "urgent",
+      "at": "2026-09-16T10:56:12.146Z",
+      "reason": "SLA breached by 807m"
     }
   ]
 }

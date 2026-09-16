@@ -2,8 +2,41 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { getStore, saveDb, computeSlaDeadline } = require('../db');
 const { sortByUrgency } = require('../utils/urgencyScore');
+const { runOverdueEscalation } = require('../utils/escalateOverdue');
 
 const router = express.Router();
+
+function persistEscalationRun() {
+  const store = getStore();
+  const runAt = new Date().toISOString();
+  const changes = runOverdueEscalation(store.tickets, new Date(runAt));
+  store.escalation_last_run_at = runAt;
+  if (changes.length > 0) {
+    store.escalation_log = [...(store.escalation_log || []), ...changes].slice(-500);
+  }
+  saveDb();
+  return changes;
+}
+
+// GET /api/tickets/escalations — Escalation audit history and latest run
+router.get('/escalations', (req, res) => {
+  const store = getStore();
+  res.json({
+    last_run_at: store.escalation_last_run_at || store.escalation_log?.at(-1)?.at || null,
+    changes: [...(store.escalation_log || [])].reverse()
+  });
+});
+
+// POST /api/tickets/escalations/run — Run escalation immediately
+router.post('/escalations/run', (req, res) => {
+  try {
+    const changes = persistEscalationRun();
+    res.json({ ran_at: new Date().toISOString(), changes });
+  } catch (err) {
+    console.error('Escalation run error:', err);
+    res.status(500).json({ error: 'Failed to run escalation check' });
+  }
+});
 
 // GET /api/tickets/stats/summary — Dashboard stats
 router.get('/stats/summary', (req, res) => {
@@ -54,8 +87,10 @@ router.get('/', (req, res) => {
       sort_by
     } = req.query;
 
-    const pageNum = Math.max(1, parseInt(page));
-    const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
+    const parsedPage = Number.parseInt(page, 10);
+    const parsedLimit = Number.parseInt(limit, 10);
+    const pageNum = Number.isFinite(parsedPage) ? Math.max(1, parsedPage) : 1;
+    const limitNum = Number.isFinite(parsedLimit) ? Math.min(100, Math.max(1, parsedLimit)) : 20;
     const now = new Date();
 
     let filtered = [...store.tickets];
@@ -98,9 +133,9 @@ router.get('/', (req, res) => {
     if (search) {
       const q = search.toLowerCase();
       filtered = filtered.filter(t =>
-        t.customer_name.toLowerCase().includes(q) ||
-        t.title.toLowerCase().includes(q) ||
-        t.id.toLowerCase().includes(q)
+        String(t.customer_name || '').toLowerCase().includes(q) ||
+        String(t.title || '').toLowerCase().includes(q) ||
+        String(t.id || '').toLowerCase().includes(q)
       );
     }
 

@@ -43,6 +43,14 @@ export function fetchStats() {
   return request('/tickets/stats/summary');
 }
 
+export function fetchEscalations() {
+  return request('/tickets/escalations');
+}
+
+export function runEscalation() {
+  return request('/tickets/escalations/run', { method: 'POST' });
+}
+
 // Agents
 export function fetchAgents() {
   return request('/agents');

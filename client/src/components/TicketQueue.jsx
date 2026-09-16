@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { PriorityBadge, StatusBadge, OverdueBadge } from './Badge';
+import { ArrowRight, Info, Zap } from 'lucide-react';
 
-function formatSlaInfo(slaDeadlineStr, status) {
+function formatSlaInfo(slaDeadlineStr, status, createdAtStr) {
   if (status === 'resolved' || status === 'closed') {
     return { text: 'Completed', className: 'done', isOverdue: false };
   }
@@ -21,14 +22,25 @@ function formatSlaInfo(slaDeadlineStr, status) {
   const totalMins = Math.floor(diffMs / 60000);
   const hours = Math.floor(totalMins / 60);
   const mins = totalMins % 60;
+  const totalWindowMs = new Date(slaDeadlineStr).getTime() - new Date(createdAtStr).getTime();
+  const isDueSoon = diffMs <= totalWindowMs * 0.25;
 
-  if (hours < 1) {
+  if (isDueSoon || hours < 1) {
     return { text: `${mins}m left`, className: 'warning', isOverdue: false };
   } else if (hours < 4) {
     return { text: `${hours}h ${mins}m left`, className: 'warning', isOverdue: false };
   } else {
     return { text: `${hours}h left`, className: 'ok', isOverdue: false };
   }
+}
+
+function isActiveStatus(status) {
+  return status === 'open' || status === 'in-progress';
+}
+
+function isTicketOverdue(ticket) {
+  return Boolean(ticket.is_overdue) ||
+    (isActiveStatus(ticket.status) && new Date() > new Date(ticket.sla_deadline));
 }
 
 export function TicketQueue({
@@ -40,7 +52,8 @@ export function TicketQueue({
   onSelectTicket,
   onQuickAssign,
   onQuickStatusChange,
-  onCreateTicketClick
+  onCreateTicketClick,
+  isOverdueFilter
 }) {
   const [, setTick] = useState(0);
 
@@ -51,31 +64,34 @@ export function TicketQueue({
 
   if (loading) {
     return (
-      <div className="loading-spinner">
-        <div className="spinner"></div>
+      <div className="queue-surface table-container">
+        {Array.from({ length: 8 }, (_, index) => (
+          <div className="skeleton-row" key={index}>
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+        ))}
       </div>
     );
   }
 
   if (!tickets || tickets.length === 0) {
     return (
-      <div className="empty-state">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        <h3>No Tickets Found</h3>
-        <p>No tickets match your filter criteria or search query.</p>
+      <div className="empty-state queue-empty">
+        <Info size={28} aria-hidden="true" />
+        <h3>{isOverdueFilter ? 'Nothing is overdue' : 'No tickets match these filters'}</h3>
+        <p>{isOverdueFilter ? 'Queue is healthy. New tickets will appear here when they need attention.' : 'Try clearing a filter or create a new support ticket.'}</p>
         <button className="btn btn-primary btn-sm" style={{ marginTop: '16px' }} onClick={onCreateTicketClick}>
-          + Create New Ticket
+          + New Ticket
         </button>
       </div>
     );
   }
 
   return (
-    <div className="table-container">
+    <div className="table-container queue-surface">
       <table className="ticket-table">
         <thead>
           <tr>
@@ -91,16 +107,27 @@ export function TicketQueue({
         </thead>
         <tbody>
           {tickets.map((ticket, index) => {
-            const sla = formatSlaInfo(ticket.sla_deadline, ticket.status);
-            const isOverdue = ticket.is_overdue || sla.isOverdue;
+            const sla = formatSlaInfo(ticket.sla_deadline, ticket.status, ticket.created_at);
+            const isOverdue = isTicketOverdue(ticket) || sla.isOverdue;
             const isMyTicket = currentUser && ticket.assigned_to === currentUser.id;
+            const previousTicket = tickets[index - 1];
+            const previousWasOverdue = previousTicket && isTicketOverdue(previousTicket);
+            const showBreachedHeader = isOverdue && (!previousTicket || !previousWasOverdue);
+            const showSlaHeader = !isOverdue && previousTicket && previousWasOverdue;
 
             return (
-              <tr
-                key={ticket.id}
-                className={isOverdue ? 'overdue' : ''}
-                onClick={() => onSelectTicket(ticket.id)}
-              >
+              <React.Fragment key={ticket.id}>
+                {(showBreachedHeader || showSlaHeader) && (
+                  <tr className={`queue-group-header ${showBreachedHeader ? 'breached' : ''}`}>
+                    <td colSpan="8">
+                      {showBreachedHeader ? `BREACHED · ${tickets.filter(isTicketOverdue).length}` : `IN SLA · ${tickets.length - tickets.filter(isTicketOverdue).length}`}
+                    </td>
+                  </tr>
+                )}
+                <tr
+                  className={isOverdue ? 'overdue queue-row' : 'queue-row'}
+                  onClick={() => onSelectTicket(ticket.id)}
+                >
                 {/* Rank & Urgency Score */}
                 <td>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -109,9 +136,10 @@ export function TicketQueue({
                     </span>
                     {ticket.urgency_score > 0 && (
                       <span className="urgency-score" title={`Urgency Score: ${ticket.urgency_score}`}>
-                        ⚡{Math.round(ticket.urgency_score)}
+                        <Zap size={12} aria-hidden="true" />{Math.round(ticket.urgency_score)}
                       </span>
                     )}
+                    {ticket.escalated && <span className="escalation-badge" title="This ticket was auto-escalated">⌁</span>}
                   </div>
                 </td>
 
@@ -164,7 +192,7 @@ export function TicketQueue({
 
                 {/* SLA Indicator */}
                 <td>
-                  <div className={`sla-indicator ${sla.className}`}>
+                  <div className={`sla-indicator ${sla.className} sla-mono`}>
                     <span className="sla-dot"></span>
                     <span>{sla.text}</span>
                   </div>
@@ -175,6 +203,7 @@ export function TicketQueue({
 
                 {/* Status */}
                 <td onClick={(e) => e.stopPropagation()}>
+                  <span className={`status-glyph status-${ticket.status}`} aria-label={`Status: ${ticket.status}`} />
                   <select
                     value={ticket.status}
                     onChange={(e) => onQuickStatusChange(ticket.id, e.target.value)}
@@ -205,11 +234,12 @@ export function TicketQueue({
                       className="btn btn-secondary btn-sm"
                       onClick={() => onSelectTicket(ticket.id)}
                     >
-                      View →
+                        View <ArrowRight size={13} aria-hidden="true" />
                     </button>
                   </div>
                 </td>
-              </tr>
+                </tr>
+              </React.Fragment>
             );
           })}
         </tbody>

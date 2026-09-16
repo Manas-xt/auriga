@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createAgent, deleteAgent } from '../api';
+import { AlertTriangle, ArrowRight, Plus, X } from 'lucide-react';
 
 export function AgentsList({ agents, currentUser, onSwitchUser, onAgentsUpdated, onNavigateToQueue }) {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -48,7 +49,7 @@ export function AgentsList({ agents, currentUser, onSwitchUser, onAgentsUpdated,
           </p>
         </div>
         <button className="btn btn-primary btn-sm" onClick={() => setShowAddModal(true)}>
-          + Add Agent
+          <Plus size={15} aria-hidden="true" /> Add Agent
         </button>
       </div>
 
@@ -88,7 +89,7 @@ export function AgentsList({ agents, currentUser, onSwitchUser, onAgentsUpdated,
                     className="btn btn-ghost btn-sm"
                     onClick={() => onNavigateToQueue({ assigned_to: agent.id })}
                   >
-                    Queue →
+                    Queue <ArrowRight size={13} aria-hidden="true" />
                   </button>
                 )}
                 {agents.length > 1 && (
@@ -98,7 +99,7 @@ export function AgentsList({ agents, currentUser, onSwitchUser, onAgentsUpdated,
                     title="Remove agent"
                     style={{ padding: '0 6px', color: 'var(--ink-subtle)' }}
                   >
-                    ✕
+                    <X size={15} aria-hidden="true" />
                   </button>
                 )}
               </div>
@@ -112,13 +113,13 @@ export function AgentsList({ agents, currentUser, onSwitchUser, onAgentsUpdated,
           <div className="modal" style={{ width: '400px' }} onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3 className="modal-title">Add Support Agent</h3>
-              <button className="drawer-close" onClick={() => setShowAddModal(false)}>✕</button>
+              <button className="drawer-close" onClick={() => setShowAddModal(false)}><X size={17} aria-hidden="true" /></button>
             </div>
             <form onSubmit={handleCreateAgent}>
               <div className="modal-body">
                 {error && (
                   <div style={{ color: 'var(--danger)', marginBottom: '16px', fontSize: '13px' }}>
-                    ⚠️ {error}
+                    <AlertTriangle size={14} aria-hidden="true" /> {error}
                   </div>
                 )}
                 <div className="form-group">

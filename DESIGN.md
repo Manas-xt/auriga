@@ -1,1574 +1,660 @@
 ---
 version: alpha
-name: Auriga Helpdesk Queue
-description: >
-  Focused helpdesk design system for a large support queue. The primary goal
-  is to make the most pressing ticket obvious, with overdue active tickets
-  jumping to the front, while keeping search, filters, assignment, ticket
-  detail, and pagination fast and consistent.
+name: Frontline-helpdesk-queue-design
+description: "A product design system for an SLA-driven helpdesk queue, derived from the Linear marketing system (#010102 canvas, #5e6ad2 lavender accent, four-step surface ladder, hairline borders) and extended into dense product UI. Where the Linear marketing spec deliberately forbids a second chromatic accent, this system introduces a sanctioned in-product semantic palette — because the queue's entire job is to encode urgency as color. Priority runs gray → blue → orange → red; SLA state runs subtle → amber → red. Lavender is reserved exclusively for system authorship: the automated escalation pass, focus rings, and the primary CTA. Typography re-anchors from marketing display sizes to a compact 12–14px product scale with tabular numerals on every countdown. The page rhythm is a single dense scannable list — the queue row is the protagonist, and every other surface exists to filter, sort, or explain it."
+
+colors:
+  primary: "#5e6ad2"
+  on-primary: "#ffffff"
+  primary-hover: "#828fff"
+  primary-focus: "#5e69d1"
+  primary-wash: "#1c1e35"
+
+  ink: "#f7f8f8"
+  ink-muted: "#d0d6e0"
+  ink-subtle: "#8a8f98"
+  ink-tertiary: "#62666d"
+
+  canvas: "#010102"
+  surface-1: "#0f1011"
+  surface-2: "#141516"
+  surface-3: "#18191a"
+  surface-4: "#191a1b"
+
+  hairline: "#23252a"
+  hairline-strong: "#34343a"
+  hairline-tertiary: "#3e3e44"
+
+  priority-urgent: "#eb5757"
+  priority-high: "#f2994a"
+  priority-normal: "#4ea7fc"
+  priority-low: "#62666d"
+
+  priority-urgent-wash: "#2a1618"
+  priority-high-wash: "#2a1f14"
+  priority-normal-wash: "#0f1c2b"
+
+  sla-breached: "#eb5757"
+  sla-due-soon: "#f2c94c"
+  sla-on-track: "#8a8f98"
+  sla-met: "#4cb782"
+
+  status-open: "#8a8f98"
+  status-progress: "#f2c94c"
+  status-waiting: "#7a7fad"
+  status-resolved: "#4cb782"
+
+  semantic-success: "#27a644"
+  semantic-danger: "#eb5757"
+  semantic-overlay: "#000000"
+
+typography:
+  page-title:
+    fontFamily: Display
+    fontSize: 22px
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: -0.4px
+  section-title:
+    fontFamily: Display
+    fontSize: 16px
+    fontWeight: 600
+    lineHeight: 1.30
+    letterSpacing: -0.2px
+  row-title:
+    fontFamily: Text
+    fontSize: 14px
+    fontWeight: 500
+    lineHeight: 1.35
+    letterSpacing: -0.05px
+  body:
+    fontFamily: Text
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.50
+    letterSpacing: 0
+  body-sm:
+    fontFamily: Text
+    fontSize: 13px
+    fontWeight: 400
+    lineHeight: 1.45
+    letterSpacing: 0
+  meta:
+    fontFamily: Text
+    fontSize: 12px
+    fontWeight: 400
+    lineHeight: 1.40
+    letterSpacing: 0
+  label:
+    fontFamily: Text
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.30
+    letterSpacing: 0.4px
+  button:
+    fontFamily: Text
+    fontSize: 13px
+    fontWeight: 500
+    lineHeight: 1.20
+    letterSpacing: 0
+  mono:
+    fontFamily: Mono
+    fontSize: 12px
+    fontWeight: 400
+    lineHeight: 1.40
+    letterSpacing: 0
+  countdown:
+    fontFamily: Mono
+    fontSize: 12px
+    fontWeight: 500
+    lineHeight: 1.30
+    letterSpacing: 0
+
+rounded:
+  xs: 4px
+  sm: 6px
+  md: 8px
+  lg: 12px
+  xl: 16px
+  pill: 9999px
+  full: 9999px
+
+spacing:
+  xxs: 4px
+  xs: 8px
+  sm: 12px
+  md: 16px
+  lg: 24px
+  xl: 32px
+  xxl: 48px
+
+components:
+  app-shell:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+  sidebar:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink-subtle}"
+    typography: "{typography.body-sm}"
+    padding: 12px
+    width: 240px
+  sidebar-item:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink-subtle}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.sm}"
+    padding: 6px 8px
+  sidebar-item-active:
+    backgroundColor: "{colors.surface-2}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.sm}"
+    padding: 6px 8px
+  toolbar:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    height: 48px
+    padding: 0 16px
+  queue-row:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.row-title}"
+    rounded: "{rounded.xs}"
+    padding: 10px 16px
+    height: 44px
+  queue-row-hover:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink}"
+    typography: "{typography.row-title}"
+    rounded: "{rounded.xs}"
+    padding: 10px 16px
+  queue-row-selected:
+    backgroundColor: "{colors.surface-2}"
+    textColor: "{colors.ink}"
+    typography: "{typography.row-title}"
+    rounded: "{rounded.xs}"
+    padding: 10px 16px
+  queue-row-breached:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.row-title}"
+    rounded: "{rounded.xs}"
+    padding: 10px 16px
+  queue-group-header:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink-subtle}"
+    typography: "{typography.label}"
+    rounded: "{rounded.xs}"
+    padding: 6px 16px
+    height: 30px
+  priority-badge:
+    backgroundColor: "{colors.surface-2}"
+    textColor: "{colors.ink-muted}"
+    typography: "{typography.meta}"
+    rounded: "{rounded.xs}"
+    padding: 2px 6px
+  status-badge:
+    backgroundColor: "{colors.surface-2}"
+    textColor: "{colors.ink-muted}"
+    typography: "{typography.meta}"
+    rounded: "{rounded.pill}"
+    padding: 2px 8px
+  sla-chip:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.sla-on-track}"
+    typography: "{typography.countdown}"
+    rounded: "{rounded.xs}"
+    padding: 2px 6px
+  sla-chip-breached:
+    backgroundColor: "{colors.priority-urgent-wash}"
+    textColor: "{colors.sla-breached}"
+    typography: "{typography.countdown}"
+    rounded: "{rounded.xs}"
+    padding: 2px 6px
+  escalation-badge:
+    backgroundColor: "{colors.primary-wash}"
+    textColor: "{colors.primary-hover}"
+    typography: "{typography.meta}"
+    rounded: "{rounded.xs}"
+    padding: 2px 6px
+  filter-chip:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink-subtle}"
+    typography: "{typography.button}"
+    rounded: "{rounded.sm}"
+    padding: 4px 10px
+  filter-chip-active:
+    backgroundColor: "{colors.surface-3}"
+    textColor: "{colors.ink}"
+    typography: "{typography.button}"
+    rounded: "{rounded.sm}"
+    padding: 4px 10px
+  search-input:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.md}"
+    padding: 6px 10px
+  text-input:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.md}"
+    padding: 8px 12px
+  select-menu:
+    backgroundColor: "{colors.surface-3}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.md}"
+    padding: 4px
+  assignee-avatar:
+    backgroundColor: "{colors.surface-3}"
+    textColor: "{colors.ink-muted}"
+    typography: "{typography.meta}"
+    rounded: "{rounded.full}"
+    padding: 0
+    size: 20px
+  detail-panel:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.lg}"
+    padding: 24px
+    width: 420px
+  escalation-strip:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink-subtle}"
+    typography: "{typography.meta}"
+    rounded: "{rounded.md}"
+    padding: 8px 12px
+  audit-row:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink-muted}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.xs}"
+    padding: 10px 0
+  stat-tile:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.lg}"
+    padding: 16px
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.button}"
+    rounded: "{rounded.md}"
+    padding: 6px 12px
+  button-secondary:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink}"
+    typography: "{typography.button}"
+    rounded: "{rounded.md}"
+    padding: 6px 12px
+  button-ghost:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink-subtle}"
+    typography: "{typography.button}"
+    rounded: "{rounded.md}"
+    padding: 6px 10px
+  pagination-bar:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink-subtle}"
+    typography: "{typography.meta}"
+    height: 44px
+    padding: 0 16px
+  empty-state:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink-subtle}"
+    typography: "{typography.body-sm}"
+    padding: 64px
+  skeleton-row:
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.ink-tertiary}"
+    rounded: "{rounded.xs}"
+    height: 44px
 ---
 
-# Auriga Helpdesk — Design Specification
-
-## 1. Product purpose
-
-Auriga is a helpdesk application for teams handling many tickets.
-
-The central problem is:
-
-> Given a large queue, always make the next ticket to work on obvious.
-
-Priority order of product concerns:
-
-1. Correct queue ordering.
-2. SLA visibility.
-3. Overdue visibility.
-4. Assignment.
-5. Filtering.
-6. Customer/ticket search.
-7. Ticket detail and actions.
-8. Pagination.
-
-The queue is the product. Do not turn the application into a decorative
-analytics dashboard.
-
-## 2. Design DNA
-
-Use the strongest practical traits of the supplied application references:
-
-| Reference | Use in Auriga |
-|---|---|
-| Linear | Focus, compactness, keyboard-first interaction |
-| Stripe | Forms, transactional clarity, data presentation |
-| Supabase | Dense admin/data interfaces |
-| Vercel | Minimal surfaces and restrained decoration |
-| Notion | Clean information hierarchy |
-| Slack | Workspace/navigation patterns |
-| Figma | Complex interaction and panel patterns |
-| Intercom | Record details and activity timelines |
-| Apple-style UI | Restraint, accessibility, polished states |
-
-Do not copy any application's branding. Build one consistent helpdesk system.
-
-Avoid:
-- marketing hero sections
-- giant cards
-- excessive gradients
-- excessive shadows
-- excessive rounded containers
-- dashboard-first architecture
-- multiple competing accent colors
-
-## 3. Primary user questions
-
-The UI must answer these immediately:
-
-```text
-What should I work on next?
-What is overdue?
-What is assigned to me?
-What is unassigned?
-Where is this customer's ticket?
-What is the response deadline?
-Who owns the ticket?
-What can I do with it?
-```
-
-## 4. Information architecture
-
-```text
-Auriga
-├── Queue
-│   ├── All tickets
-│   ├── My tickets
-│   ├── Overdue
-│   └── Unassigned
-├── Tickets
-│   └── Ticket detail
-├── Customers
-│   └── Customer ticket history
-└── Settings
-```
-
-All tickets, My tickets, Overdue, and Unassigned are views over the same
-ticket dataset, not separate products.
-
-## 5. Application shell
-
-```text
-┌──────────────────────────────────────────────────────────────────────────┐
-│ Auriga   Search tickets/customers...       Help  Notifications  Avatar   │
-├──────────────┬───────────────────────────────────────────────────────────┤
-│ Queue        │ Queue                                                     │
-│  All tickets │                                                           │
-│  My tickets  │ [Search] [Priority] [Status] [Assignee] [SLA]             │
-│  Overdue     │                                                           │
-│  Unassigned  │ ┌───────────────────────────────────────────────────────┐ │
-│              │ │ Ticket queue                                          │ │
-│ Tickets      │ │                                                       │ │
-│ Customers    │ │ URGENT  Laptop won't boot   OVERDUE       Priya      │ │
-│ Settings     │ │ URGENT  Demo issue          18m left      Amit       │ │
-│              │ │ NORMAL  Bigger monitor      4h left       Unassigned │ │
-│              │ └───────────────────────────────────────────────────────┘ │
-└──────────────┴───────────────────────────────────────────────────────────┘
-```
-
-Desktop:
-- persistent sidebar
-- compact top bar
-- wide data area
-- clear current queue
-
-Sidebar:
-- 232–256px expanded
-- 64–72px collapsed
-- active item uses subtle surface and text emphasis
-- counts only when useful
-- permission-aware
-
-## 6. Visual language
-
-Default theme: light.
-
-The interface should feel:
-- operational
-- calm
-- precise
-- moderately dense
-- readable
-- fast
-- professional
-
-Use borders and surface changes before shadows.
-
-Do not make every ticket or metric a large floating card.
-
-## 7. Color tokens
-
-```yaml
-colors:
-  canvas: "#F7F8FA"
-  surface: "#FFFFFF"
-  surface-subtle: "#F9FAFB"
-  surface-elevated: "#F1F3F5"
-  surface-hover: "#F4F5F7"
-
-  text-primary: "#17181A"
-  text-secondary: "#5F6368"
-  text-tertiary: "#7B8088"
-  text-disabled: "#A5A9B0"
-
-  border: "#E3E5E8"
-  border-strong: "#D0D4D9"
-
-  primary: "#5E6AD2"
-  primary-hover: "#4F5BC4"
-  primary-active: "#454FAE"
-  primary-soft: "#EEF0FF"
-
-  success: "#16803C"
-  success-soft: "#EAF7EE"
-
-  warning: "#A15C00"
-  warning-soft: "#FFF4E5"
-
-  danger: "#C62828"
-  danger-soft: "#FDECEC"
-
-  info: "#1769AA"
-  info-soft: "#EAF4FC"
-```
-
-Rules:
-- primary is for primary actions and focus
-- danger represents overdue/error/destructive states
-- warning represents approaching SLA/attention
-- success represents resolved/completed
-- never communicate state with color alone
-- avoid full-row semantic backgrounds
-
-## 8. Typography
-
-Recommended:
-
-```text
-Inter
-Geist
-system-ui
-```
-
-```yaml
-typography:
-  page-title:   24px / 600 / 1.2
-  section-title: 18px / 600 / 1.3
-  ticket-title: 14px / 500 / 1.4
-  body:         14px / 400 / 1.5
-  small:        13px / 400 / 1.4
-  caption:      12px / 400 / 1.4
-  button:       14px / 500 / 1.2
-  mono:         12px / 400 / 1.5
-```
-
-Use monospace for ticket IDs and technical identifiers.
-
-## 9. Spacing and radius
-
-Use a 4px base grid.
-
-```yaml
-spacing:
-  xs: 4px
-  sm: 8px
-  md: 12px
-  lg: 16px
-  xl: 24px
-  xxl: 32px
-  section: 40px
-
-radius:
-  small: 4px
-  input: 6px
-  button: 6px
-  card: 8px
-  dialog: 10px
-  pill: 9999px
-```
-
-Recommended controls:
-- input: 40px
-- button: 36–40px
-- table row: 48px
-- compact row: 40px
-- touch target: minimum 44px
-
-## 10. Queue ordering — the core rule
-
-Every ticket has:
-
-```text
-priority
-agreed response time
-SLA deadline
-status
-assignee
-created time
-```
-
-Required SLA targets:
-
-```text
-Urgent: 2 hours
-Normal: 1 day
-```
-
-### Deterministic queue order
-
-```text
-1. Active tickets before non-active tickets.
-2. Overdue active tickets before active tickets still within SLA.
-3. Within overdue tickets:
-   higher priority first,
-   then earliest SLA deadline / most overdue first.
-4. Within non-overdue tickets:
-   higher priority first,
-   then nearest SLA deadline first.
-5. Creation time is the next tie-breaker.
-6. Ticket ID is the final stable tie-breaker if required.
-```
-
-Priority:
-
-```text
-Urgent > Normal
-```
-
-Example:
-
-```text
-A  Urgent  overdue 90m
-B  Normal  overdue 20m
-C  Urgent  45m remaining
-D  Normal  3h remaining
-```
-
-Expected queue:
-
-```text
-A
-B
-C
-D
-```
-
-Critical invariant:
-
-> Any overdue active ticket must appear before any active ticket that is
-> still within its SLA.
-
-## 11. Queue architecture
-
-Do not duplicate queue business logic in React components.
-
-Preferred flow:
-
-```text
-Database
-  ↓
-Ticket query
-  ↓
-Authoritative queue ordering
-  ↓
-Search/filter
-  ↓
-Pagination
-  ↓
-API response
-  ↓
-React queue
-```
-
-The backend is the source of truth.
-
-Do not use unexplained magic urgency weights if a deterministic comparator
-can express the requirement.
-
-## 12. SLA model
-
-Store the actual deadline.
-
-Minimum fields:
-
-```text
-createdAt
-priority
-slaDeadline
-status
-```
-
-Initial calculation:
-
-```text
-Urgent  = createdAt + 2 hours
-Normal  = createdAt + 1 day
-```
-
-Queue display:
-
-```text
-18m remaining
-```
-
-or:
-
-```text
-OVERDUE BY 42m
-```
-
-Detail display:
-
-```text
-SLA deadline
-16 Sep 2026, 10:12 AM
-
-Current state
-Overdue by 42 minutes
-```
-
-Priority and SLA state are separate:
-
-```text
-Urgent + within SLA
-Urgent + overdue
-Normal + within SLA
-Normal + overdue
-```
-
-## 13. Queue screen
-
-```text
-Queue
-
-128 tickets                         7 overdue
-
-[ Search tickets... ]
-
-[ All ] [ My tickets ] [ Overdue ] [ Unassigned ]
-
-Priority ▾   Status ▾   Assignee ▾   SLA ▾
-
-┌────┬────────────────────┬──────────────┬─────────┬──────────┬───────────┐
-│    │ Ticket             │ Customer     │ Priority│ Assignee │ SLA       │
-├────┼────────────────────┼──────────────┼─────────┼──────────┼───────────┤
-│ !  │ Laptop won't boot  │ Acme Corp    │ URGENT  │ Priya    │ OVERDUE   │
-│ !  │ Client demo issue  │ Globex       │ URGENT  │ Amit     │ 18m left  │
-│    │ Bigger monitor     │ Acme Corp    │ NORMAL  │ —        │ 4h left   │
-└────┴────────────────────┴──────────────┴─────────┴──────────┴───────────┘
-
-Showing 1–50 of 1,284
-```
-
-## 14. Ticket row
-
-Default columns:
-
-```text
-Priority
-Title
-Customer
-Status
-Assignee
-SLA
-Updated
-```
-
-Optional:
-
-```text
-Ticket ID
-Created
-Category
-```
-
-Visual priority:
-
-```text
-1. Title
-2. SLA
-3. Priority
-4. Customer
-5. Assignee
-6. Metadata
-```
-
-Do not overload the default table.
-
-## 15. Overdue treatment
-
-Use:
-
-```text
-OVERDUE BY 42m
-```
-
-with:
-- danger text
-- small danger indicator
-- subtle danger background where useful
-
-Do not make an entire overdue row bright red.
-
-## 16. Pagination
-
-Pagination is required for large queues.
-
-```text
-Showing 1–50 of 1,284
-
-[ Previous ] 1 2 3 4 5 ... 26 [ Next ]
-```
-
-Rules:
-- order before pagination
-- filter/search before pagination
-- never sort only the current page
-- preserve filters between pages
-- preserve queue semantics on every page
-- default around 50 items per page
-
-## 17. My tickets
-
-Conceptually:
-
-```text
-assignee = currentUser
-```
-
-Use the same queue ordering.
-
-```text
-My tickets
-
-12 assigned to you
-2 overdue
-
-[ Search ] [ Priority ] [ Status ] [ SLA ]
-```
-
-The view changes the dataset, not the sorting rules.
-
-## 18. Overdue view
-
-Conceptually:
-
-```text
-slaDeadline < now
-AND
-ticket is active
-```
-
-Example:
-
-```text
-Overdue
-
-7 tickets
-
-URGENT   Laptop won't boot       1h 12m overdue
-URGENT   Client demo issue       24m overdue
-NORMAL   Monitor request          5m overdue
-```
-
-## 19. Unassigned view
-
-Conceptually:
-
-```text
-assignee = null
-```
-
-Example:
-
-```text
-Unassigned
-
-4 tickets
-
-Laptop request
-Monitor request
-VPN access
-Printer issue
-
-[ Assign selected ]
-```
-
-Bulk assignment is useful for a small helpdesk.
-
-## 20. Filters
-
-Primary filters:
-
-```text
-Priority
-Status
-Assignee
-SLA
-```
-
-Optional:
-
-```text
-Customer
-Created date
-Updated date
-```
-
-UI:
-
-```text
-[ Search ] [ Priority ▾ ] [ Status ▾ ] [ Assignee ▾ ] [ SLA ▾ ]
-```
-
-Selected filters become removable chips:
-
-```text
-Priority: Urgent ×
-Assignee: Priya ×
-```
-
-Filtering narrows the dataset without changing ordering semantics.
-
-## 21. Search
-
-Search is a first-class workflow.
-
-Support:
-
-```text
-Ticket title
-Customer name
-Ticket ID
-Customer email where appropriate
-```
-
-Example:
-
-```text
-Search: Acme
-
-Customers
-  Acme Corporation
-
-Tickets
-  Laptop won't boot
-  Client demo issue
-  VPN access
-```
-
-For large datasets:
-- server-side search
-- debounce input
-- case-insensitive
-- partial matches
-- optional match highlighting
-
-The user should not need a ticket ID to find a customer's ticket.
-
-## 22. Search + queue
-
-Search is a filtered view of the same queue.
-
-If:
-
-```text
-A Urgent overdue
-B Normal overdue
-C Urgent 30m remaining
-```
-
-the result remains:
-
-```text
-A
-B
-C
-```
-
-Do not create an independent search sort.
-
-## 23. Ticket detail
-
-Existing component:
-
-```text
-client/src/components/TicketDetail.jsx
-```
-
-Recommended:
-
-```text
-← Queue
-
-[URGENT] Laptop won't boot before client demo
-
-Ticket #TCK-10241
-
-                         [Assign] [Status ▾] [...]
-
-Customer
-Acme Corporation
-
-Assignee
-Priya
-
-Status
-Open
-
-SLA
-OVERDUE BY 42m
-
-────────────────────────────────────────
-
-Description
-
-The laptop does not boot and the client demo
-starts this afternoon.
-
-────────────────────────────────────────
-
-Activity
-
-Priya assigned ticket
-Today 10:12
-
-Ticket created
-Today 08:12
-```
-
-The detail view must answer:
-1. What is this?
-2. Who is it for?
-3. What is its state?
-4. What is its SLA?
-5. Who owns it?
-6. What can I do?
-7. What happened?
-
-## 24. Ticket actions
-
-Primary:
-
-```text
-[ Assign ]
-[ Status ▾ ]
-```
-
-Useful secondary actions:
-
-```text
-[ Change priority ]
-[ ... ]
-```
-
-Keep important actions visible.
-
-## 25. Assignment
-
-```text
-Assignee
-
-[ Priya ▾ ]
-
-Search agents...
-
-○ Priya
-○ Amit
-○ Unassigned
-```
-
-Useful shortcut:
-
-```text
-[ Assign to me ]
-```
-
-Bulk:
-
-```text
-3 tickets selected
-
-[ Assign ]
-[ Change priority ]
-[ Change status ]
-```
-
-## 26. Priority change
-
-```text
-Priority
-
-● Urgent
-○ Normal
-```
-
-Changing priority must immediately cause the ticket to be reconciled with
-the authoritative queue ordering.
-
-## 27. Ticket creation
-
-Existing component:
-
-```text
-client/src/components/CreateTicketModal.jsx
-```
-
-Use a modal.
-
-```text
-Create ticket
-
-Customer
-[ Search customer... ]
-
-Title
-[____________________________]
-
-Description
-[____________________________]
-[____________________________]
-
-Priority
-[ Normal ▾ ]
-
-Assignee
-[ Unassigned ▾ ]
-
-[ Cancel ] [ Create ticket ]
-```
-
-Creation:
-
-```text
-Create
- ↓
-Calculate SLA deadline
- ↓
-Persist
- ↓
-Place ticket in correct queue position
-```
-
-## 28. Ticket status
-
-Initial status model:
-
-```text
-Open
-In Progress
-Waiting
-Resolved
-Closed
-```
-
-Typical flow:
-
-```text
-Open
- ↓
-In Progress
- ↓
-Resolved
- ↓
-Closed
-```
+## Overview
 
-Waiting:
-
-```text
-In Progress
- ↓
-Waiting
- ↓
-In Progress
-```
-
-Keep the model simple unless requirements expand.
-
-## 29. Activity timeline
-
-```text
-Activity
-
-● Priority changed to Urgent
-  By Priya · 10:42 AM
-
-● Ticket assigned to Priya
-  10:12 AM
-
-● Ticket created
-  08:12 AM
-```
-
-Useful events:
-
-```text
-created
-assigned
-unassigned
-priority changed
-status changed
-description changed
-resolved
-closed
-```
-
-## 30. Existing component responsibilities
-
-Project structure:
-
-```text
-client/
-├── dist/
-├── node_modules/
-├── src/
-│   ├── components/
-│   │   ├── AgentsList.jsx
-│   │   ├── Badge.jsx
-│   │   ├── CreateTicketModal.jsx
-│   │   ├── Dashboard.jsx
-│   │   ├── FilterBar.jsx
-│   │   ├── Pagination.jsx
-│   │   ├── Sidebar.jsx
-│   │   ├── TicketDetail.jsx
-│   │   └── TicketQueue.jsx
-│   ├── api.js
-│   ├── App.jsx
-│   ├── index.css
-│   └── main.jsx
-├── index.html
-├── package.json
-└── package-lock.json
-
-server/
-├── node_modules/
-├── routes/
-│   ├── agents.js
-│   └── tickets.js
-├── utils/
-│   └── UrgencyScore.js
-├── data.json
-├── db.js
-├── index.js
-├── seed.js
-├── package.json
-└── package-lock.json
-```
-
-Responsibilities:
-
-```text
-App.jsx
-  application composition / routing
-
-Sidebar.jsx
-  navigation, active state, queue shortcuts
-
-Dashboard.jsx
-  lightweight operational overview
-
-TicketQueue.jsx
-  ordered queue rendering and selection
-
-FilterBar.jsx
-  search and filters
+This is a **product** system, not a marketing system. The parent Linear spec documents a marketing canvas and explicitly notes in its Known Gaps that "Linear's actual product UI uses a richer color-tag palette (red, orange, yellow, green, blue, purple) for issue priorities" — colors that live only inside the screenshots. This app *is* that screenshot. So this spec inherits Linear's surfaces, hairlines, radii, and lavender discipline, then fills the documented gap with a semantic palette.
 
-Pagination.jsx
-  pagination controls
+The core inherited decisions are unchanged:
 
-TicketDetail.jsx
-  ticket record and actions
+- `{colors.canvas}` #010102 as the anchor surface — near-black with a faint blue tint, never `#000000`.
+- A four-step surface ladder carrying hierarchy without drop shadows.
+- 1px hairline borders at `{colors.hairline}` #23252a.
+- `{rounded.md}` 8px on buttons and inputs, `{rounded.lg}` 12px on panels. Never pill-round a CTA.
+- Lavender `{colors.primary}` #5e6ad2 used scarcely.
 
-CreateTicketModal.jsx
-  ticket creation
+The core adaptations:
 
-AgentsList.jsx
-  agents / assignment
+- **Typography re-anchors down.** Marketing display sizes (80px, 56px, 40px) have no place here. The largest type in the app is `{typography.page-title}` at 22px. The queue row runs 14px/500 with 12px meta. Density is the point — Priya should see 15–20 tickets without scrolling.
+- **A semantic color layer is introduced.** Four priority colors and three SLA states. This is the one sanctioned departure from the parent spec's "no second chromatic accent" rule, and it is load-bearing: the ordering rule is the heart of the product, and color is how the ordering rule becomes legible at a glance.
+- **Lavender is narrowed further.** In this app lavender means *the system did this, not a human*. It marks auto-escalated tickets, the escalation run strip, and focus rings — plus the single primary CTA. Nothing else.
 
-Badge.jsx
-  priority, status and SLA presentation
+**Key characteristics:**
 
-api.js
-  API communication
+- One dense list is the protagonist. Every other surface filters, explains, or acts on it.
+- Urgency reads as color temperature: gray → blue → orange → red.
+- Breached tickets are marked by a left rail, not a filled row background. Fills destroy scannability.
+- Every duration is set in tabular mono so countdowns don't jitter as they tick.
+- The automated escalation pass is *visible*, not silent.
 
-index.css
-  design tokens and global styles
+## The Ordering Rule
 
-main.jsx
-  application bootstrap
-```
-
-Do not put queue business rules into visual components.
+The sort is the product. It must be expressed identically in code, in the UI, and in this document.
 
-## 31. UrgencyScore.js
+**Sort key, in order:**
 
-Existing:
-
-```text
-server/utils/UrgencyScore.js
-```
+1. **SLA breached** — descending (breached first). Anything past its promised response time jumps the queue regardless of priority.
+2. **Priority** — urgent → high → normal → low.
+3. **Due at** — soonest first. Among equals, whatever is closest to breaching.
+4. **Created at** — oldest first. Deterministic tiebreak; no ticket can be starved.
 
-The product requirement is a deterministic ordering rule, not a magic score.
+**Visual expression of the rule.** The list renders as two bands separated by a `{spacing.xs}` gap and a `queue-group-header`:
 
-Prefer logic equivalent to:
+| Band | Header label | Header accent | Contents |
+|---|---|---|---|
+| 1 | `BREACHED · {n}` | `{colors.sla-breached}` text | All tickets past `due_at`, sorted by priority then most-overdue |
+| 2 | `IN SLA · {n}` | `{colors.ink-subtle}` text | Everything else, sorted by priority then soonest-due |
 
-```text
-isOverdue
-priorityRank
-slaDeadline
-createdAt
-id
-```
+If band 1 is empty it is omitted entirely and band 2 loses its header — a clean queue should look clean, not like a section with a zero in it.
 
-If the utility is retained, its result must produce exactly the documented
-ordering.
+**Never offer a sort dropdown that can defeat this rule.** Filters narrow the set; they never reorder it. This is the single strongest opinion in the system: the right ticket is always on top because there is no way for the user to make it otherwise.
 
-Do not hide business-critical queue semantics behind unexplained numeric
-weights.
+## Colors
 
-## 32. API layer
+### Priority
 
-Existing:
+The four priority levels, from the parent spec's in-product tag palette. Each renders as a 3px-tall bar glyph in the row's leftmost slot plus an optional text label in the detail panel.
 
-```text
-client/src/api.js
-```
+| Level | Token | Hex | Glyph |
+|---|---|---|---|
+| Urgent | `{colors.priority-urgent}` | #eb5757 | Four filled bars |
+| High | `{colors.priority-high}` | #f2994a | Three filled bars |
+| Normal | `{colors.priority-normal}` | #4ea7fc | Two filled bars |
+| Low | `{colors.priority-low}` | #62666d | One filled bar |
 
-Recommended abstraction:
-
-```text
-getTickets(params)
-getTicket(id)
-createTicket(data)
-updateTicket(id, data)
-getAgents()
-getCustomers()
-```
+The bar-glyph pattern is deliberate: it encodes rank redundantly (color *and* fill count) so the queue stays readable for colorblind users and in grayscale screenshots.
 
-Example:
-
-```text
-GET /tickets
-  ?page=1
-  &limit=50
-  &priority=urgent
-  &assignee=agent-priya
-  &status=open
-  &search=acme
-```
+Wash variants (`{colors.priority-urgent-wash}` etc.) are ~8% tints over canvas, used only as badge backgrounds in the detail panel — never as row fills.
 
-The API should return correctly ordered results.
+### SLA state
 
-## 33. Server routes
+Computed from `due_at` against now. Three states, applied to the `sla-chip` and the row's left rail.
 
-Existing:
+| State | Token | Hex | Condition | Chip content |
+|---|---|---|---|---|
+| Breached | `{colors.sla-breached}` | #eb5757 | `now > due_at` | `2h 14m over` |
+| Due soon | `{colors.sla-due-soon}` | #f2c94c | < 25% of window remains | `18m left` |
+| On track | `{colors.sla-on-track}` | #8a8f98 | ≥ 25% remains | `4h left` |
+| Met | `{colors.sla-met}` | #4cb782 | responded before `due_at` | `met in 22m` |
 
-```text
-server/routes/agents.js
-server/routes/tickets.js
-```
+Amber "due soon" is the most valuable state in the system and the one most implementations skip. It is what lets Priya act *before* a breach instead of reacting after one.
 
-Initial ticket endpoints:
+### Status
 
-```text
-GET    /tickets
-GET    /tickets/:id
-POST   /tickets
-PATCH  /tickets/:id
-```
+| Status | Token | Hex |
+|---|---|---|
+| Open | `{colors.status-open}` | #8a8f98 |
+| In progress | `{colors.status-progress}` | #f2c94c |
+| Waiting on customer | `{colors.status-waiting}` | #7a7fad |
+| Resolved | `{colors.status-resolved}` | #4cb782 |
 
-Possible later endpoints:
+Status renders as a small ring/dot glyph, not a filled pill, in the row. Filled `status-badge` pills appear only in the detail panel.
 
-```text
-POST /tickets/:id/assign
-POST /tickets/:id/status
-POST /tickets/:id/priority
-```
+### Lavender discipline
 
-Keep the API simple until separate operations are actually needed.
-
-## 34. Ticket data model
-
-Minimum:
-
-```yaml
-Ticket:
-  id:
-  title:
-  description:
-  customer:
-  priority:
-  status:
-  assignee:
-  createdAt:
-  updatedAt:
-  slaDeadline:
-```
+`{colors.primary}` and its family are permitted in exactly four places:
 
-Optional later:
+1. The primary CTA (`New ticket`).
+2. Focus rings — 2px `{colors.primary-focus}` outline at 50% opacity.
+3. The `escalation-badge` on any ticket raised by the automated pass.
+4. The `escalation-strip` showing when the pass last ran.
 
-```text
-resolvedAt
-closedAt
-category
-```
+Lavender is never a row background, never a priority color, never a link color in the ticket body. Its scarcity is what makes "the system touched this" instantly readable.
 
-Example:
-
-```json
-{
-  "id": "TCK-10241",
-  "title": "Laptop won't boot before client demo",
-  "description": "The laptop does not boot.",
-  "customer": {
-    "id": "CUS-1001",
-    "name": "Acme Corporation"
-  },
-  "priority": "urgent",
-  "status": "open",
-  "assignee": "agent-priya",
-  "createdAt": "2026-09-16T08:12:00",
-  "updatedAt": "2026-09-16T09:31:00",
-  "slaDeadline": "2026-09-16T10:12:00"
-}
-```
+## Typography
 
-## 35. Queue reactivity
+### Font family
 
-Queue position can change when:
+- **Display** — `Inter, SF Pro Display, -apple-system, system-ui, sans-serif`, weights 500/600. Carries page and section titles.
+- **Text** — same stack, weights 400/500. Carries everything in the list.
+- **Mono** — `JetBrains Mono, ui-monospace, SF Mono, Menlo, monospace`, weight 400/500. Carries ticket IDs and all durations.
 
-```text
-priority changes
-status changes
-SLA state changes
-SLA deadline changes
-time crosses the SLA deadline
-```
+Enable `font-variant-numeric: tabular-nums` globally on `{typography.countdown}` and `{typography.mono}`. Without it, a live countdown shifts horizontally every second and the whole column shimmers.
 
-Example:
-
-```text
-Normal
-3h remaining
-    ↓
-Priority changed to Urgent
-    ↓
-Reconcile with queue comparator
-    ↓
-Ticket moves to correct position
-```
+### Hierarchy
 
-When a ticket crosses its SLA deadline:
-
-```text
-SLA deadline reached
-    ↓
-Ticket becomes overdue
-    ↓
-Ticket moves into overdue group
-```
+| Token | Size | Weight | Tracking | Use |
+|---|---|---|---|---|
+| `{typography.page-title}` | 22px | 600 | -0.4px | View name in the toolbar ("All tickets", "Overdue") |
+| `{typography.section-title}` | 16px | 600 | -0.2px | Detail panel ticket subject, modal titles |
+| `{typography.row-title}` | 14px | 500 | -0.05px | Ticket subject in the queue row |
+| `{typography.body}` | 14px | 400 | 0 | Ticket description, comments |
+| `{typography.body-sm}` | 13px | 400 | 0 | Detail panel fields, sidebar items, buttons |
+| `{typography.meta}` | 12px | 400 | 0 | Customer name, assignee name, timestamps |
+| `{typography.label}` | 11px | 500 | +0.4px | Group headers, field labels — uppercase |
+| `{typography.mono}` | 12px | 400 | 0 | Ticket IDs (`HD-2481`) |
+| `{typography.countdown}` | 12px | 500 | 0 | SLA remaining/overdue durations |
 
-Do not require a full page reload for normal updates.
+Inherited principle: **positive tracking on labels, negative on titles.** The uppercase `{typography.label}` at +0.4px reads as taxonomy against the negatively-tracked titles.
 
-## 36. Real-time behavior
+## Layout
 
-If real-time updates are added:
+### App shell
 
-```text
-TICKET_UPDATED
-    ↓
-Update local ticket
-    ↓
-Reconcile queue position
-    ↓
-Move minimally
 ```
-
-Avoid repeatedly jumping the user's screen while they are reading.
-
-A non-disruptive option:
-
-```text
-Queue updated · 2 tickets moved
-[ Refresh position ]
+┌────────────┬───────────────────────────────────────────┐
+│            │  toolbar (48px)                           │
+│  sidebar   ├───────────────────────────────────────────┤
+│  240px     │  filter bar (40px)                        │
+│            ├───────────────────────────────────────────┤
+│  · Queue   │  BREACHED · 3                             │
+│  · Overdue │  ▌ ▮▮▮▮  HD-2481  Laptop won't boot  …    │
+│  · Mine    │  ▌ ▮▮▮▮  HD-2455  VPN drops every …  …    │
+│  · All     │                                           │
+│            │  IN SLA · 128                             │
+│  ────────  │    ▮▮▮   HD-2490  Outlook sync err   …    │
+│  Agents    │    ▮▮    HD-2491  Monitor request    …    │
+│            ├───────────────────────────────────────────┤
+│  esc strip │  pagination (44px)                        │
+└────────────┴───────────────────────────────────────────┘
 ```
-
-## 37. Empty states
-
-All tickets:
 
-```text
-No tickets
+- **Sidebar** 240px fixed, `{colors.canvas}`, 1px `{colors.hairline}` right border. Saved views up top, agent roster below a divider, `escalation-strip` pinned to the bottom.
+- **Main column** fills remaining width, max 1280px, left-aligned (not centered — a queue centered in a wide viewport looks unmoored).
+- **Detail panel** slides in from the right at 420px, pushing rather than overlaying at ≥1280px; overlays with a `{colors.semantic-overlay}` scrim at 60% below that.
 
-There are no tickets matching your current filters.
+### Queue row anatomy
 
-[ Clear filters ]
-```
-
-My tickets:
+A 44px row. Fixed-width slots so columns align vertically down the whole list — misaligned columns are what make dense lists unreadable.
 
-```text
-No tickets assigned to you
+| Slot | Width | Content |
+|---|---|---|
+| Rail | 2px | Breach indicator. `{colors.sla-breached}` if breached, otherwise transparent |
+| Priority | 20px | Bar glyph |
+| Status | 20px | Ring glyph |
+| ID | 64px | `{typography.mono}` at `{colors.ink-tertiary}` |
+| Subject | flex | `{typography.row-title}`, single line, ellipsis |
+| Customer | 140px | `{typography.meta}` at `{colors.ink-subtle}` |
+| Escalation | 24px | `escalation-badge` if auto-raised, else empty |
+| SLA | 96px | `sla-chip`, right-aligned |
+| Assignee | 28px | `assignee-avatar`, or a dashed 20px circle if unassigned |
 
-You're currently not assigned any tickets.
-```
+The 2px left rail is the entire breach treatment. Resist the urge to fill the row in red — with several breached tickets the list becomes a wall of red and the priority ordering *inside* the breached band stops being visible.
 
-Overdue:
+### Spacing
 
-```text
-No overdue tickets
+Base unit 4px. Row padding `10px 16px`. Gap between bands `{spacing.xs}` 8px. Detail panel interior `{spacing.lg}` 24px. Toolbar and filter bar sit on `{colors.canvas}` divided by 1px `{colors.hairline}` rules — not by gaps.
 
-Everything is currently within its response target.
-```
+### Whitespace
 
-Unassigned:
+The dark canvas is the whitespace, as in the parent spec. But product density means the section rhythm is *rules and surface lifts*, never 96px gaps. If you find yourself reaching for `{spacing.xxl}`, you are designing a marketing page.
 
-```text
-No unassigned tickets
+## Elevation & depth
 
-All active tickets have an owner.
-```
+| Level | Treatment | Use |
+|---|---|---|
+| 0 | No background, no border | Queue rows at rest, toolbar, pagination |
+| 1 | `{colors.surface-1}` | Row hover, group headers, stat tiles, detail panel |
+| 2 | `{colors.surface-2}` | Selected row, badges |
+| 3 | `{colors.surface-3}` | Dropdown menus, assignee picker, command palette |
+| 4 | 2px `{colors.primary-focus}` outline @ 50% | Focused input, focused row |
 
-## 38. Loading states
+No drop shadows anywhere except level-3 floating menus, which take a single soft `0 8px 24px rgba(0,0,0,0.5)` to lift off the list beneath them.
 
-Use skeleton rows.
+**Rows at rest have no background.** Hover lifts to surface-1. This is what makes a 200-row list feel calm instead of striped.
 
-```text
-Queue
+## Components
 
-┌──────────────────────────────────────────────────────┐
-│ ███████████████   █████████   ████████               │
-│ ███████████████   █████████   ████████               │
-│ ███████████████   █████████   ████████               │
-│ ███████████████   █████████   ████████               │
-└──────────────────────────────────────────────────────┘
-```
+### Filter bar
 
-For actions:
+A horizontal strip of `filter-chip` controls directly under the toolbar. Left to right: **Overdue** (toggle), **Assigned** (menu), **Priority** (multi-select menu), **Status** (multi-select menu), then a right-aligned `search-input`.
 
-```text
-[ Saving... ]
-```
+- Active chips lift to `filter-chip-active` (`{colors.surface-3}`) and append a count: `Priority · 2`.
+- A **Clear** `button-ghost` appears at the right end of the chip group only when ≥1 filter is active.
+- `Overdue` and `Assigned: me` are the two Priya asks about constantly — give them dedicated sidebar views *as well as* chips, so they're one click from anywhere.
+- The active filter set belongs in the URL query string. Priya should be able to bookmark "my overdue urgents."
 
-## 39. Error states
+### Search
 
-Queue:
+`search-input` in the toolbar, 240px, expanding to 360px on focus. Placeholder: `Search tickets or customers…`. Matches on customer name, ticket subject, and ID. Debounce 200ms. Matched substrings highlight with `{colors.primary-wash}` background and `{colors.ink}` text.
 
-```text
-Unable to load tickets
+Bind `/` to focus it and `⌘K` to open a full command palette if you build one. Searching by customer name is the third thing Priya does all day; it should never cost her a mouse trip.
 
-The ticket queue could not be loaded.
+### Assignment
 
-[ Retry ]
-```
+The `assignee-avatar` slot is click-to-open — no need to enter the ticket. Opens a `select-menu` at level 3 listing agents with a **Unassign** option and **Assign to me** pinned at top. Unassigned renders as a 20px dashed circle at `{colors.hairline-strong}`, which reads as an open slot rather than a missing value.
 
-Ticket:
+### Escalation surfaces (the twist)
 
-```text
-Unable to load ticket
+The automated pass raises any breached ticket by one level — low → normal → high → urgent — at most one level per run. Three surfaces make it legible:
 
-The ticket may have been removed or the server is
-temporarily unavailable.
+**`escalation-badge`** — a small lavender chevron chip in the row for any ticket whose priority was raised by the system. Tooltip: `Auto-escalated normal → high · 2h ago`. It persists until the ticket is resolved.
 
-[ Back to queue ] [ Retry ]
+**`escalation-strip`** — pinned to the sidebar bottom. Two lines at `{typography.meta}`:
 ```
-
-Errors should explain the problem and next action.
-
-## 40. Confirmation
-
-Use confirmation only for consequential actions.
-
-```text
-Delete ticket?
-
-This will permanently remove the ticket.
-
-[ Cancel ] [ Delete ticket ]
+Escalation check · 4m ago
+3 tickets raised        [Run now]
 ```
+`Run now` is a `button-ghost`. On click it shows a 600ms spinner, then the row count updates and affected rows flash their `escalation-badge` in with a 300ms fade.
 
-Do not confirm harmless navigation, filtering, searching, or selection.
-
-## 41. Dashboard
-
-Dashboard is supporting context, not the main product.
-
-Useful:
-
-```text
-Open tickets
-Overdue
-My tickets
-Unassigned
-Next ticket
+**Escalation log** — a sidebar view rendering `audit-row` entries, one per change, newest first:
 ```
-
-Example:
-
-```text
-Open          128
-Overdue         7
-My tickets     12
-Unassigned      4
-
-Next ticket
-Laptop won't boot
-URGENT
-OVERDUE BY 42m
-
-[ Open ticket ]
+HD-2455   low → normal      14:02   SLA breached by 1h 12m
+HD-2481   high → urgent     14:02   SLA breached by 3h 40m
 ```
+Priority transitions render with both levels in their own semantic colors and a `{colors.ink-tertiary}` arrow between.
 
-Do not add unrelated business analytics.
+Most submissions will fire this job silently. Making it visible costs three small components and is the clearest way to show the check actually works.
 
-## 42. Responsive behavior
+### Pagination
 
-Breakpoints:
+A 44px bar below the list, `{typography.meta}` at `{colors.ink-subtle}`. Left: `Showing 1–50 of 312`. Right: page-size `select-menu` (25/50/100), then `button-ghost` prev/next with a page indicator.
 
-```yaml
-breakpoints:
-  mobile: 480px
-  mobile-large: 640px
-  tablet: 768px
-  desktop: 1024px
-  large: 1280px
-  wide: 1440px
-```
+**Sort order is global, not per-page.** Page 1 holds the most pressing 50 tickets in the whole queue. Never paginate before sorting.
 
-Desktop:
-- persistent sidebar
-- full queue table
-- keyboard-first interaction
-
-Tablet:
-- collapsible sidebar
-- reduced columns
-
-Mobile:
-- ticket cards
-- single-column layout
-- drawer/detail view
-- preserve the exact queue ordering
-
-Do not simply shrink the desktop table.
-
-## 43. Mobile ticket card
-
-```text
-┌───────────────────────────────┐
-│ URGENT · OVERDUE              │
-│                               │
-│ Laptop won't boot             │
-│ Acme Corporation              │
-│                               │
-│ Priya                         │
-│ Overdue by 42m                │
-└───────────────────────────────┘
-```
+### Empty states
 
-Primary mobile information:
-
-```text
-Priority
-Title
-Customer
-SLA
-Assignee
-```
+- **No tickets at all** — `empty-state`, 64px padding, muted glyph, `No tickets yet`, `button-primary` to create one.
+- **Filters match nothing** — `No tickets match these filters` plus a `button-secondary` **Clear filters**.
+- **Nothing overdue** — this one gets warmth. `Nothing is overdue. Queue is healthy.` with a `{colors.sla-met}` check glyph. It's the one moment in the app worth celebrating.
 
-## 44. Accessibility
+### Loading
 
-Target WCAG 2.2 AA.
+`skeleton-row` at 44px, 8 rows, shimmer at 1.4s. Never spin a full-page loader over a list — the row skeleton preserves layout and makes the load feel half as long.
 
-Requirements:
-- keyboard navigation
-- visible focus
-- semantic HTML
-- accessible dialogs
-- accessible table headers
-- screen-reader labels
-- no color-only state
-- minimum 44px touch target
-- clear form errors
-- logical tab order
-- focus restoration after modal close
+## Motion
 
-Never represent urgency only with a red dot.
+| Interaction | Duration | Easing |
+|---|---|---|
+| Row hover | 80ms | linear |
+| Filter chip toggle | 120ms | ease-out |
+| Detail panel slide | 200ms | cubic-bezier(0.2, 0, 0, 1) |
+| Menu open | 140ms | ease-out |
+| Escalation badge appear | 300ms | ease-out, fade + 4px rise |
+| Row reorder after escalation | 400ms | cubic-bezier(0.2, 0, 0, 1), FLIP transform |
 
-Use:
+The reorder animation matters more than the rest combined. When a ticket escalates and jumps to the top, **animate the movement**. A row that teleports looks like a bug; a row that slides looks like the system working. Respect `prefers-reduced-motion` by cutting all of these to 0ms except a 100ms opacity fade.
 
-```text
-URGENT
-```
+## Do's and don'ts
 
-plus visual reinforcement.
+### Do
 
-## 45. Keyboard UX
+- Keep `{colors.canvas}` #010102 as the anchor. The faint blue tint is intentional.
+- Encode priority redundantly — color *and* bar count.
+- Set every duration in tabular mono.
+- Mark breach with a 2px rail, not a row fill.
+- Reserve lavender for system authorship and focus.
+- Animate reordering when escalation changes the queue.
+- Put the active filter set in the URL.
+- Sort the whole queue before paginating.
 
-Recommended:
+### Don't
 
-```text
-Ctrl/Cmd + K    Global search / command palette
-/               Focus search
-C               Create ticket
-Esc             Close
-Enter           Open/select
-↑ / ↓           Navigate queue
-```
+- Don't ship a sort dropdown that can override the SLA-first rule.
+- Don't fill breached rows with red.
+- Don't use lavender as a priority or status color.
+- Don't run the escalation pass silently.
+- Don't escalate more than one level per run, however overdue the ticket.
+- Don't use `#000000` as the canvas.
+- Don't pill-round buttons — `{rounded.md}` 8px.
+- Don't add atmospheric gradients or spotlight cards.
+- Don't center the main column in a wide viewport.
+- Don't exceed 44px row height. Density is the feature.
 
-Shortcuts accelerate expert users but must never be required.
+## Responsive behavior
 
-## 46. Performance
+| Breakpoint | Width | Changes |
+|---|---|---|
+| Desktop-XL | ≥1440px | Full shell; detail panel pushes |
+| Desktop | 1280px | Detail panel pushes; all row slots visible |
+| Tablet | 1024px | Sidebar collapses to 56px icon rail; detail panel overlays |
+| Mobile-Lg | 768px | Customer slot drops to line 2 of the row; row grows to 64px |
+| Mobile | ≤480px | Rows become stacked cards; filters move into a bottom sheet |
 
-Large queues require:
+**Row slot drop order under pressure:** ID → customer → status glyph. Priority glyph and SLA chip never drop. They *are* the product.
 
-- server-side pagination
-- server-side search where appropriate
-- server-side filtering where appropriate
-- server-side authoritative ordering
-- no loading of every ticket into the browser
-- no thousands of unnecessary DOM nodes
-- debounced search
-- cached stable agent/customer lists where useful
+Touch targets: rows ≥44px, chips ≥36px (≥44px on touch), avatar tap area padded to 44px even at 20px visual size.
 
-## 47. Queue invariants
+## Data model notes for implementers
 
-These should be tested independently of the UI.
+Fields the UI assumes on every ticket:
 
-```text
-1. Overdue active tickets appear before non-overdue active tickets.
-2. Urgent precedes Normal within the same SLA state.
-3. Deadline determines order within equivalent priority/SLA groups.
-4. Filtering never changes ordering semantics.
-5. Pagination never changes ordering semantics.
-6. My tickets uses the same ordering.
-7. Overdue contains only active overdue tickets.
 ```
-
-## 48. Minimum queue test cases
-
-Test:
-
-```text
-1. Urgent overdue vs normal overdue
-2. Normal overdue vs urgent within SLA
-3. Urgent within SLA vs normal within SLA
-4. Identical SLA deadlines
-5. Newly created urgent ticket
-6. Ticket crossing SLA deadline
-7. Overdue ticket becoming resolved
-8. Assignment to current user
-9. Assignee filtering
-10. Priority filtering
-11. Search by customer name
-12. Pagination across ordered results
+id            HD-2481
+subject       string
+customer      { name, email }
+priority      low | normal | high | urgent
+status        open | in_progress | waiting | resolved
+assignee_id   nullable
+created_at    timestamp
+due_at        timestamp          // created_at + SLA window
+responded_at  nullable timestamp
+escalated     bool
+escalations   [{ from, to, at, reason }]
 ```
 
-Expected example:
-
-```text
-A  Urgent  overdue 60m
-B  Normal  overdue 10m
-C  Urgent  30m remaining
-D  Normal  2h remaining
-
-Expected:
-A
-B
-C
-D
-```
+SLA windows are policy, not hardcoded: the current configuration is `critical 1h`, `urgent 2h`, `high 4h`, `normal 24h`, and `low 24h`. Keep them in one config object so any helpdesk can change them without touching queue code.
 
-## 49. CSS architecture
-
-Use CSS variables.
-
-```css
-:root {
-  --color-bg-canvas: #f7f8fa;
-  --color-bg-surface: #ffffff;
-  --color-bg-subtle: #f9fafb;
-
-  --color-text-primary: #17181a;
-  --color-text-secondary: #5f6368;
-  --color-text-tertiary: #7b8088;
-
-  --color-border: #e3e5e8;
-  --color-border-strong: #d0d4d9;
-
-  --color-brand: #5e6ad2;
-  --color-brand-hover: #4f5bc4;
-
-  --color-success: #16803c;
-  --color-warning: #a15c00;
-  --color-danger: #c62828;
-  --color-info: #1769aa;
-
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-6: 24px;
-  --space-8: 32px;
-}
-```
+`due_at` is recomputed on escalation — a ticket raised to urgent gets an urgent window from the moment of escalation. Document whichever choice you make; the reviewer will ask.
 
-All components should consume tokens.
-
-## 50. Implementation order
-
-Build in this order:
-
-```text
-Phase 1 — Correctness
-  Ticket model
-  SLA calculation
-  Queue comparator
-  Pagination
-  GET /tickets
-
-Phase 2 — Queue UI
-  TicketQueue
-  FilterBar
-  Pagination
-  Badge
-  Sidebar
-
-Phase 3 — Ticket workflows
-  TicketDetail
-  CreateTicketModal
-  Assignment
-  Priority change
-  Status change
-
-Phase 4 — Search
-  Ticket search
-  Customer search
-
-Phase 5 — Operational dashboard
-  Open
-  Overdue
-  My tickets
-  Unassigned
-  Next ticket
-
-Phase 6 — Polish
-  Loading
-  Empty states
-  Error states
-  Keyboard shortcuts
-  Accessibility
-  Responsive behavior
-```
+## Iteration guide
 
-Do not spend significant effort polishing the dashboard before queue ordering
-is correct.
-
-## 51. Do
-
-- Make the queue the primary screen.
-- Make ordering deterministic.
-- Put overdue active tickets first.
-- Make SLA state obvious.
-- Keep My tickets one click away.
-- Keep Overdue one click away.
-- Keep Unassigned one click away.
-- Search by customer name.
-- Apply ordering before pagination.
-- Keep filters from changing ordering semantics.
-- Make assignment fast.
-- Reconcile the queue after mutations.
-- Test the comparator independently.
-- Keep business logic outside visual components.
-
-## 52. Don't
-
-- Do not sort only the current frontend page.
-- Do not duplicate the queue algorithm in multiple components.
-- Do not use unexplained urgency weights.
-- Do not allow non-overdue active tickets above overdue active tickets.
-- Do not hide SLA information only in ticket detail.
-- Do not make the dashboard more important than the queue.
-- Do not make every metric a card.
-- Do not use color as the only urgency indicator.
-- Do not overload the default table.
-- Do not require full page reloads after ordinary updates.
-- Do not turn this project into an ERP.
-- Do not add unrelated modules without a product requirement.
-
-## 53. Final UX loop
-
-```text
-Open Auriga
-    ↓
-See ordered queue
-    ↓
-Top ticket is clearly the most pressing
-    ↓
-Open ticket
-    ↓
-Understand customer + issue + priority + SLA
-    ↓
-Assign / update / resolve
-    ↓
-Return to queue
-    ↓
-Next pressing ticket is on top
-```
+1. Build the queue row before anything else. It's 70% of the product.
+2. Write the sort as one pure function, test it directly, and never duplicate the logic in a component.
+3. Add the two bands before adding any filter.
+4. Filters narrow; they never reorder.
+5. Build the escalation pass as a pure function over the ticket list that returns a changelog, so it's testable and the audit log is free.
+6. Reference components by their `components:` token name when iterating.
 
-## 54. Final rule
+## Known gaps
 
-> **The queue is the product. Everything else exists to help the agent
-> understand, filter, act on, and return to that queue.**
+- Light mode is not specified. The parent system doesn't ship one and neither should this.
+- Ticket threading, attachments, and customer-facing views are out of scope.
+- The escalation cadence (cron interval vs. on-read evaluation) is an implementation choice; the UI assumes a discrete run with a timestamp either way.
+- Multi-tenant branding hooks are not defined; if the app must serve any helpdesk, extract `{colors.primary}` and the SLA policy object as the two theming seams.

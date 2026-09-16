@@ -3,15 +3,13 @@
  * =======================
  * This is the HEART of the helpdesk queue system.
  *
- * Every ticket gets a computed urgency score that determines its position
- * in the queue. Higher score = more urgent = appears first.
+ * Every ticket gets a computed urgency score for display. Queue position is
+ * determined by the explicit comparator in sortByUrgency below.
  *
  * Score = priorityWeight + overdueBoost + timeDecay
  *
  * 1. Priority Weight: Base score from ticket priority level
  * 2. Overdue Boost:   If past SLA deadline, add 1000 + minutes overdue
- *                     This ensures ALL overdue tickets jump above non-overdue,
- *                     and the MOST overdue ticket sorts first among them.
  * 3. Time Decay:      As a ticket approaches its deadline, its score climbs
  *                     smoothly from 0 to 100, creating urgency before it's late.
  */
@@ -23,6 +21,24 @@ const PRIORITY_WEIGHTS = {
   normal: 100,
   low: 50
 };
+
+const PRIORITY_ORDER = {
+  critical: 5,
+  urgent: 4,
+  high: 3,
+  normal: 2,
+  low: 1
+};
+
+const ACTIVE_STATUSES = new Set(['open', 'in-progress']);
+
+function isActive(ticket) {
+  return ACTIVE_STATUSES.has(ticket.status);
+}
+
+function isOverdue(ticket, now) {
+  return isActive(ticket) && now > new Date(ticket.sla_deadline);
+}
 
 /**
  * Compute the urgency score for a single ticket.
@@ -71,11 +87,29 @@ function sortByUrgency(tickets, now = new Date()) {
   return tickets
     .map(ticket => {
       const urgency_score = computeUrgencyScore(ticket, now);
-      const is_overdue = now > new Date(ticket.sla_deadline) &&
-        ticket.status !== 'resolved' && ticket.status !== 'closed';
+      const is_overdue = isOverdue(ticket, now);
       return { ...ticket, urgency_score: Math.round(urgency_score * 100) / 100, is_overdue };
     })
-    .sort((a, b) => b.urgency_score - a.urgency_score);
+    .sort((a, b) => {
+      const activeDifference = Number(isActive(b)) - Number(isActive(a));
+      if (activeDifference !== 0) return activeDifference;
+
+      const overdueDifference = Number(b.is_overdue) - Number(a.is_overdue);
+      if (overdueDifference !== 0) return overdueDifference;
+
+      const priorityDifference =
+        (PRIORITY_ORDER[b.priority] || PRIORITY_ORDER.normal) -
+        (PRIORITY_ORDER[a.priority] || PRIORITY_ORDER.normal);
+      if (priorityDifference !== 0) return priorityDifference;
+
+      const deadlineDifference = new Date(a.sla_deadline) - new Date(b.sla_deadline);
+      if (deadlineDifference !== 0) return deadlineDifference;
+
+      const createdDifference = new Date(a.created_at) - new Date(b.created_at);
+      if (createdDifference !== 0) return createdDifference;
+
+      return String(a.id).localeCompare(String(b.id));
+    });
 }
 
-module.exports = { computeUrgencyScore, sortByUrgency, PRIORITY_WEIGHTS };
+module.exports = { computeUrgencyScore, sortByUrgency, PRIORITY_WEIGHTS, PRIORITY_ORDER };

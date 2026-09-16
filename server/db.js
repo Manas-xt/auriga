@@ -6,7 +6,9 @@ const DB_PATH = path.join(__dirname, 'data.json');
 // In-memory store, persisted to JSON file
 let store = {
   agents: [],
-  tickets: []
+  tickets: [],
+  escalation_log: [],
+  escalation_last_run_at: null
 };
 
 // SLA response times in minutes
@@ -14,7 +16,7 @@ const SLA_MINUTES = {
   critical: 60,       // 1 hour
   urgent: 120,        // 2 hours
   high: 240,          // 4 hours
-  normal: 480,        // 8 hours (1 business day)
+  normal: 1440,       // 1 day
   low: 1440           // 24 hours (3 business days)
 };
 
@@ -34,7 +36,7 @@ function loadDb() {
     }
   } catch (err) {
     console.error('Failed to load DB, starting fresh:', err.message);
-    store = { agents: [], tickets: [] };
+    store = { agents: [], tickets: [], escalation_log: [], escalation_last_run_at: null };
   }
 }
 
