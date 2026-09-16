@@ -1,0 +1,10 @@
+{
+  "name": "auriga",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Auriga IT Helpdesk Priority Queue",
+  "scripts": {
+    "server": "npm start --prefix server",
+    "client": "npm run dev --prefix client"
+  }
+}

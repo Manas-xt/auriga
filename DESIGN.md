@@ -1,245 +1,162 @@
 ---
 version: alpha
-name: Universal-ERP-Design-System
+name: Auriga Helpdesk Queue
 description: >
-  A production-oriented design system for a multi-domain ERP platform serving
-  hospitals, schools, offices, finance teams, operations teams, and other
-  organizations. It combines the strongest practical characteristics of
-  Linear (focus and information hierarchy), Stripe (forms, finance and
-  transactional UX), Supabase (dense admin/data interfaces), Vercel
-  (minimal visual language), Notion (flexible information structures),
-  Slack (workspace navigation and communication), Figma (complex
-  interaction patterns), Intercom (record-centric workflows), and
-  Apple-inspired restraint and polish. The result is intentionally
-  information-dense, calm, fast, accessible, and scalable rather than
-  marketing-oriented.
+  Focused helpdesk design system for a large support queue. The primary goal
+  is to make the most pressing ticket obvious, with overdue active tickets
+  jumping to the front, while keeping search, filters, assignment, ticket
+  detail, and pagination fast and consistent.
 ---
 
-# Universal ERP Design System
+# Auriga Helpdesk — Design Specification
 
-## 1. Product Philosophy
+## 1. Product purpose
 
-The ERP is an **operating system for an organization**, not a marketing website.
+Auriga is a helpdesk application for teams handling many tickets.
 
-Primary principles:
+The central problem is:
 
-- Information first.
-- Actions should be obvious.
-- Keep users in context.
-- Optimize for repeated daily workflows.
-- Prefer tables, lists, forms, filters, and detail views over decorative cards.
-- Use progressive disclosure for complexity.
-- Make dense information readable rather than hiding it behind excessive whitespace.
-- Keep visual decoration subordinate to operational information.
-- Every important action should have a keyboard and accessible interaction path.
-- Consistency is more important than novelty.
-- The UI must work for both a hospital receptionist and a finance administrator without changing its fundamental interaction model.
+> Given a large queue, always make the next ticket to work on obvious.
 
-### Design DNA
+Priority order of product concerns:
 
-| Source inspiration | ERP interpretation |
+1. Correct queue ordering.
+2. SLA visibility.
+3. Overdue visibility.
+4. Assignment.
+5. Filtering.
+6. Customer/ticket search.
+7. Ticket detail and actions.
+8. Pagination.
+
+The queue is the product. Do not turn the application into a decorative
+analytics dashboard.
+
+## 2. Design DNA
+
+Use the strongest practical traits of the supplied application references:
+
+| Reference | Use in Auriga |
 |---|---|
-| Linear | Focus, hierarchy, keyboard-first navigation, compact UI |
-| Stripe | Transactional forms, financial data, clean tables, trust |
-| Supabase | Dense admin panels, developer-grade data management |
-| Vercel | Minimal surfaces, restrained decoration, strong typography |
-| Notion | Flexible records, nested information, editable content |
-| Slack | Workspace navigation, notifications, contextual activity |
-| Figma | Complex interactions, panels, multi-step editing |
-| Intercom | Record detail pages, timelines, conversations, workflows |
-| Apple | Restraint, clarity, accessibility, polished states |
-| Airbnb | Clear empty states, approachable onboarding, human-readable content |
-| Microsoft/Office-style ERP patterns | Familiar productivity conventions and enterprise workflows |
+| Linear | Focus, compactness, keyboard-first interaction |
+| Stripe | Forms, transactional clarity, data presentation |
+| Supabase | Dense admin/data interfaces |
+| Vercel | Minimal surfaces and restrained decoration |
+| Notion | Clean information hierarchy |
+| Slack | Workspace/navigation patterns |
+| Figma | Complex interaction and panel patterns |
+| Intercom | Record details and activity timelines |
+| Apple-style UI | Restraint, accessibility, polished states |
 
----
-
-# 2. Core UX Model
-
-Every ERP module should follow this general model:
-
-```text
-Workspace
-    ↓
-Module
-    ↓
-List / Search / Filter
-    ↓
-Record
-    ↓
-Detail
-    ↓
-Action
-    ↓
-Workflow / Approval
-    ↓
-Activity / Audit Trail
-```
-
-Example:
-
-```text
-Hospital
-  → Patients
-  → Patient List
-  → Patient Record
-  → Patient Detail
-  → Appointment / Billing / Prescription
-  → Approval where required
-  → Audit history
-```
-
-The same structure should work for:
-
-```text
-School
-  → Students
-  → Student List
-  → Student Record
-  → Student Detail
-  → Attendance / Fees / Exams
-
-Office
-  → Employees
-  → Employee List
-  → Employee Record
-  → Employee Detail
-  → Attendance / Payroll / Leave
-```
-
----
-
-# 3. Application Shell
-
-## 3.1 Desktop Layout
-
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│ Workspace ▾        Search ⌘K                 Help   Notifications   Avatar │
-├──────────────┬──────────────────────────────────────────────────────────────┤
-│              │                                                              │
-│ Dashboard    │ Breadcrumbs                                                  │
-│              │                                                              │
-│ Operations   │ Page title                              Primary action       │
-│  Patients    │                                                              │
-│  Students    │ Filters / tabs / views                                      │
-│  Employees   │                                                              │
-│  Inventory   │                                                              │
-│              │ ┌──────────────────────────────────────────────────────────┐ │
-│ Finance      │ │ Data table / record list                                │ │
-│  Invoices    │ │                                                          │ │
-│  Payments    │ │                                                          │ │
-│  Expenses    │ └──────────────────────────────────────────────────────────┘ │
-│              │                                                              │
-│ People       │                                                              │
-│  Employees   │                                                              │
-│  Attendance  │                                                              │
-│              │                                                              │
-│ Reports      │                                                              │
-│              │                                                              │
-│ Settings     │                                                              │
-└──────────────┴──────────────────────────────────────────────────────────────┘
-```
-
-## 3.2 Sidebar
-
-Characteristics:
-
-- Persistent on desktop.
-- Collapsible to icon rail.
-- Width: 240–280px expanded.
-- Width: 64–72px collapsed.
-- Group navigation by business domain.
-- Show active module clearly.
-- Support nested navigation.
-- Show notification/count badges only when meaningful.
-- Organization switcher at the top.
-- Settings and profile actions near the bottom.
-- Permission-aware: users only see modules they can access.
-
-### Sidebar hierarchy
-
-```text
-Workspace
-────────────────────
-Dashboard
-
-Operations
-  ├─ Patients
-  ├─ Appointments
-  ├─ Admissions
-  └─ Inventory
-
-People
-  ├─ Employees
-  ├─ Attendance
-  └─ Leave
-
-Finance
-  ├─ Invoices
-  ├─ Payments
-  └─ Expenses
-
-Reports
-
-────────────────────
-Settings
-```
-
----
-
-# 4. Visual Direction
-
-The ERP supports both **light and dark themes**.
-
-Default recommendation:
-
-- Light mode for general enterprise usage.
-- Dark mode for users who prefer it and for long-duration desktop work.
-- Never rely on color alone to communicate state.
-
-The visual language should be:
-
-- Neutral.
-- Precise.
-- Dense but breathable.
-- Minimal.
-- Professional.
-- Slightly technical.
-- Low decoration.
-- High contrast.
-- Clear hierarchy.
+Do not copy any application's branding. Build one consistent helpdesk system.
 
 Avoid:
+- marketing hero sections
+- giant cards
+- excessive gradients
+- excessive shadows
+- excessive rounded containers
+- dashboard-first architecture
+- multiple competing accent colors
 
-- Excessive gradients.
-- Huge marketing headlines inside operational screens.
-- Giant rounded cards.
-- Excessive shadows.
-- Multiple competing accent colors.
-- Glassmorphism everywhere.
-- Decorative illustrations in data-heavy screens.
-- Dashboard layouts where every piece of information becomes a card.
+## 3. Primary user questions
 
----
+The UI must answer these immediately:
 
-# 5. Color System
+```text
+What should I work on next?
+What is overdue?
+What is assigned to me?
+What is unassigned?
+Where is this customer's ticket?
+What is the response deadline?
+Who owns the ticket?
+What can I do with it?
+```
 
-The color system uses a neutral foundation and semantic accents.
+## 4. Information architecture
 
-## 5.1 Light Theme
+```text
+Auriga
+├── Queue
+│   ├── All tickets
+│   ├── My tickets
+│   ├── Overdue
+│   └── Unassigned
+├── Tickets
+│   └── Ticket detail
+├── Customers
+│   └── Customer ticket history
+└── Settings
+```
+
+All tickets, My tickets, Overdue, and Unassigned are views over the same
+ticket dataset, not separate products.
+
+## 5. Application shell
+
+```text
+┌──────────────────────────────────────────────────────────────────────────┐
+│ Auriga   Search tickets/customers...       Help  Notifications  Avatar   │
+├──────────────┬───────────────────────────────────────────────────────────┤
+│ Queue        │ Queue                                                     │
+│  All tickets │                                                           │
+│  My tickets  │ [Search] [Priority] [Status] [Assignee] [SLA]             │
+│  Overdue     │                                                           │
+│  Unassigned  │ ┌───────────────────────────────────────────────────────┐ │
+│              │ │ Ticket queue                                          │ │
+│ Tickets      │ │                                                       │ │
+│ Customers    │ │ URGENT  Laptop won't boot   OVERDUE       Priya      │ │
+│ Settings     │ │ URGENT  Demo issue          18m left      Amit       │ │
+│              │ │ NORMAL  Bigger monitor      4h left       Unassigned │ │
+│              │ └───────────────────────────────────────────────────────┘ │
+└──────────────┴───────────────────────────────────────────────────────────┘
+```
+
+Desktop:
+- persistent sidebar
+- compact top bar
+- wide data area
+- clear current queue
+
+Sidebar:
+- 232–256px expanded
+- 64–72px collapsed
+- active item uses subtle surface and text emphasis
+- counts only when useful
+- permission-aware
+
+## 6. Visual language
+
+Default theme: light.
+
+The interface should feel:
+- operational
+- calm
+- precise
+- moderately dense
+- readable
+- fast
+- professional
+
+Use borders and surface changes before shadows.
+
+Do not make every ticket or metric a large floating card.
+
+## 7. Color tokens
 
 ```yaml
 colors:
   canvas: "#F7F8FA"
-  surface-1: "#FFFFFF"
-  surface-2: "#F9FAFB"
-  surface-3: "#F1F3F5"
+  surface: "#FFFFFF"
+  surface-subtle: "#F9FAFB"
+  surface-elevated: "#F1F3F5"
   surface-hover: "#F4F5F7"
 
-  ink: "#17181A"
-  ink-muted: "#5F6368"
-  ink-subtle: "#7B8088"
-  ink-disabled: "#A5A9B0"
+  text-primary: "#17181A"
+  text-secondary: "#5F6368"
+  text-tertiary: "#7B8088"
+  text-disabled: "#A5A9B0"
 
   border: "#E3E5E8"
   border-strong: "#D0D4D9"
@@ -262,799 +179,1017 @@ colors:
   info-soft: "#EAF4FC"
 ```
 
-## 5.2 Dark Theme
+Rules:
+- primary is for primary actions and focus
+- danger represents overdue/error/destructive states
+- warning represents approaching SLA/attention
+- success represents resolved/completed
+- never communicate state with color alone
+- avoid full-row semantic backgrounds
 
-```yaml
-colors:
-  canvas: "#0B0C0E"
-  surface-1: "#111315"
-  surface-2: "#17191C"
-  surface-3: "#1D2024"
-  surface-hover: "#202329"
-
-  ink: "#F5F7F8"
-  ink-muted: "#B1B6BE"
-  ink-subtle: "#858B94"
-  ink-disabled: "#5D626A"
-
-  border: "#282C31"
-  border-strong: "#383D44"
-
-  primary: "#7B85E8"
-  primary-hover: "#9098F0"
-  primary-active: "#6973D8"
-  primary-soft: "#202541"
-
-  success: "#35B86B"
-  success-soft: "#14291D"
-
-  warning: "#D99032"
-  warning-soft: "#302313"
-
-  danger: "#EF6666"
-  danger-soft: "#321A1A"
-
-  info: "#62A9DF"
-  info-soft: "#162735"
-```
-
-## 5.3 Color Rules
-
-- Primary color is reserved for important actions and focus.
-- Success, warning, danger, and info are semantic.
-- Status colors must include text/icons, not color alone.
-- Do not make every badge colorful.
-- Charts should use a restrained palette.
-- Use neutral surfaces for most components.
-- Critical destructive actions use danger semantics.
-- Financial values should not automatically be green/red unless the meaning is explicitly positive/negative.
-
----
-
-# 6. Typography
-
-Use a modern system sans.
+## 8. Typography
 
 Recommended:
 
 ```text
 Inter
 Geist
-SF Pro
 system-ui
 ```
 
-Fallback:
-
-```text
--apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
-```
-
-## Type scale
-
 ```yaml
 typography:
-  display:
-    size: 40px
-    weight: 600
-    lineHeight: 1.15
-    letterSpacing: -1.0px
-
-  page-title:
-    size: 28px
-    weight: 600
-    lineHeight: 1.2
-    letterSpacing: -0.5px
-
-  section-title:
-    size: 20px
-    weight: 600
-    lineHeight: 1.3
-
-  card-title:
-    size: 16px
-    weight: 600
-    lineHeight: 1.4
-
-  body:
-    size: 14px
-    weight: 400
-    lineHeight: 1.5
-
-  body-large:
-    size: 16px
-    weight: 400
-    lineHeight: 1.5
-
-  caption:
-    size: 12px
-    weight: 400
-    lineHeight: 1.4
-
-  label:
-    size: 13px
-    weight: 500
-    lineHeight: 1.3
-
-  button:
-    size: 14px
-    weight: 500
-    lineHeight: 1.2
-
-  mono:
-    size: 12px
-    weight: 400
-    lineHeight: 1.5
+  page-title:   24px / 600 / 1.2
+  section-title: 18px / 600 / 1.3
+  ticket-title: 14px / 500 / 1.4
+  body:         14px / 400 / 1.5
+  small:        13px / 400 / 1.4
+  caption:      12px / 400 / 1.4
+  button:       14px / 500 / 1.2
+  mono:         12px / 400 / 1.5
 ```
 
-### Typography rules
+Use monospace for ticket IDs and technical identifiers.
 
-- Use negative tracking for large headings.
-- Keep body text neutral and highly readable.
-- Use semibold instead of bold wherever possible.
-- Use monospace for IDs, invoice numbers, API values, codes, and technical data.
-- Never use typography alone to compensate for bad information architecture.
-
----
-
-# 7. Spacing
+## 9. Spacing and radius
 
 Use a 4px base grid.
 
 ```yaml
 spacing:
-  1: 4px
-  2: 8px
-  3: 12px
-  4: 16px
-  5: 20px
-  6: 24px
-  8: 32px
-  10: 40px
-  12: 48px
-  16: 64px
-```
-
-Common rules:
-
-- Input horizontal padding: 12px.
-- Input vertical padding: 8–10px.
-- Card padding: 20–24px.
-- Table cell padding: 10–14px.
-- Section gap: 24–32px.
-- Major page sections: 32–48px.
-- Never create huge empty spaces in operational screens.
-
----
-
-# 8. Border Radius
-
-```yaml
-radius:
   xs: 4px
-  sm: 6px
-  md: 8px
-  lg: 10px
-  xl: 14px
+  sm: 8px
+  md: 12px
+  lg: 16px
+  xl: 24px
+  xxl: 32px
+  section: 40px
+
+radius:
+  small: 4px
+  input: 6px
+  button: 6px
+  card: 8px
+  dialog: 10px
   pill: 9999px
 ```
 
-Usage:
+Recommended controls:
+- input: 40px
+- button: 36–40px
+- table row: 48px
+- compact row: 40px
+- touch target: minimum 44px
 
-- Buttons: 6–8px.
-- Inputs: 6–8px.
-- Cards: 8–12px.
-- Dialogs: 12–14px.
-- Status pills: pill.
-- Avatars: circle.
+## 10. Queue ordering — the core rule
 
-ERP interfaces should not look like a collection of floating bubbles.
-
----
-
-# 9. Elevation
-
-Use borders and surface changes before shadows.
+Every ticket has:
 
 ```text
-Level 0
-Canvas
-
-Level 1
-Surface + subtle border
-
-Level 2
-Elevated surface + stronger border
-
-Level 3
-Popover / dropdown / modal + shadow
-
-Level 4
-Critical overlay
+priority
+agreed response time
+SLA deadline
+status
+assignee
+created time
 ```
 
-Shadows should be:
-
-- subtle
-- short
-- soft
-- reserved for floating elements
-
-Avoid heavy shadows on every card.
-
----
-
-# 10. Buttons
-
-## Primary
-
-Use for:
-
-- Create
-- Save
-- Submit
-- Approve
-- Confirm
+Required SLA targets:
 
 ```text
-[ + New Patient ]
-[ Save Changes ]
+Urgent: 2 hours
+Normal: 1 day
 ```
 
-## Secondary
-
-Use for:
-
-- Cancel
-- Export
-- View
-- Secondary workflows
+### Deterministic queue order
 
 ```text
-[ Export ]
+1. Active tickets before non-active tickets.
+2. Overdue active tickets before active tickets still within SLA.
+3. Within overdue tickets:
+   higher priority first,
+   then earliest SLA deadline / most overdue first.
+4. Within non-overdue tickets:
+   higher priority first,
+   then nearest SLA deadline first.
+5. Creation time is the next tie-breaker.
+6. Ticket ID is the final stable tie-breaker if required.
 ```
 
-## Tertiary
-
-Use for low-emphasis actions:
+Priority:
 
 ```text
-More
-View all
-Learn more
+Urgent > Normal
 ```
-
-## Destructive
-
-```text
-[ Delete Employee ]
-```
-
-Rules:
-
-- One primary action per major context.
-- Do not make every button primary.
-- Destructive actions require confirmation when consequences are meaningful.
-- Buttons must have visible disabled, hover, focus, loading, and pressed states.
-
----
-
-# 11. Inputs
-
-Standard field:
-
-```text
-Email
-[ rahul@example.com                         ]
-
-Helper text explaining the expected value.
-```
-
-Error:
-
-```text
-Email
-[ invalid@email                         ]
-This email address is not valid.
-```
-
-Rules:
-
-- Labels remain visible.
-- Placeholder text is not a replacement for labels.
-- Validation should be close to the field.
-- Preserve entered values after validation failures.
-- Support keyboard navigation.
-- Support autocomplete where appropriate.
-
----
-
-# 12. Tables
-
-Tables are a primary ERP component.
 
 Example:
 
 ```text
-Patients                                      + New Patient
-
-[ Search patients... ] [ Filter ] [ Columns ] [ Export ]
-
-┌────┬────────────────┬────────┬───────────┬──────────────┬─────┐
-│ □  │ Patient        │ Status │ Department│ Last visit   │ ... │
-├────┼────────────────┼────────┼───────────┼──────────────┼─────┤
-│ □  │ Rahul Sharma   │ Active │ Cardiology│ 16 Sep 2026  │ ... │
-│ □  │ Priya Singh    │ Active │ Pediatrics│ 15 Sep 2026  │ ... │
-│ □  │ Amit Verma     │ Pending│ General   │ 15 Sep 2026  │ ... │
-└────┴────────────────┴────────┴───────────┴──────────────┴─────┘
-
-Showing 1–50 of 1,248                          < 1 2 3 ... >
+A  Urgent  overdue 90m
+B  Normal  overdue 20m
+C  Urgent  45m remaining
+D  Normal  3h remaining
 ```
 
-Table requirements:
-
-- Search.
-- Sorting.
-- Filtering.
-- Column visibility.
-- Column resizing where useful.
-- Pagination or virtualization for large datasets.
-- Bulk selection.
-- Bulk actions.
-- Row actions.
-- Empty state.
-- Loading state.
-- Error state.
-- Keyboard navigation.
-- Sticky header for long tables.
-- Responsive transformation for mobile.
-
-### Density
-
-Default density:
+Expected queue:
 
 ```text
-Compact:   40px row
-Default:   48px row
-Comfortable: 56px row
+A
+B
+C
+D
 ```
 
-Allow users to choose density when the dataset is large.
+Critical invariant:
 
----
+> Any overdue active ticket must appear before any active ticket that is
+> still within its SLA.
 
-# 13. Filters
+## 11. Queue architecture
 
-Filters should be composable.
+Do not duplicate queue business logic in React components.
+
+Preferred flow:
 
 ```text
-Search...
-
-Status       [ Active ▾ ]
-Department   [ Cardiology ▾ ]
-Date         [ Last 30 days ▾ ]
-Doctor       [ Any ▾ ]
-
-[ Clear filters ]
+Database
+  ↓
+Ticket query
+  ↓
+Authoritative queue ordering
+  ↓
+Search/filter
+  ↓
+Pagination
+  ↓
+API response
+  ↓
+React queue
 ```
 
-Advanced filtering:
+The backend is the source of truth.
+
+Do not use unexplained magic urgency weights if a deterministic comparator
+can express the requirement.
+
+## 12. SLA model
+
+Store the actual deadline.
+
+Minimum fields:
 
 ```text
-Status = Active
+createdAt
+priority
+slaDeadline
+status
+```
+
+Initial calculation:
+
+```text
+Urgent  = createdAt + 2 hours
+Normal  = createdAt + 1 day
+```
+
+Queue display:
+
+```text
+18m remaining
+```
+
+or:
+
+```text
+OVERDUE BY 42m
+```
+
+Detail display:
+
+```text
+SLA deadline
+16 Sep 2026, 10:12 AM
+
+Current state
+Overdue by 42 minutes
+```
+
+Priority and SLA state are separate:
+
+```text
+Urgent + within SLA
+Urgent + overdue
+Normal + within SLA
+Normal + overdue
+```
+
+## 13. Queue screen
+
+```text
+Queue
+
+128 tickets                         7 overdue
+
+[ Search tickets... ]
+
+[ All ] [ My tickets ] [ Overdue ] [ Unassigned ]
+
+Priority ▾   Status ▾   Assignee ▾   SLA ▾
+
+┌────┬────────────────────┬──────────────┬─────────┬──────────┬───────────┐
+│    │ Ticket             │ Customer     │ Priority│ Assignee │ SLA       │
+├────┼────────────────────┼──────────────┼─────────┼──────────┼───────────┤
+│ !  │ Laptop won't boot  │ Acme Corp    │ URGENT  │ Priya    │ OVERDUE   │
+│ !  │ Client demo issue  │ Globex       │ URGENT  │ Amit     │ 18m left  │
+│    │ Bigger monitor     │ Acme Corp    │ NORMAL  │ —        │ 4h left   │
+└────┴────────────────────┴──────────────┴─────────┴──────────┴───────────┘
+
+Showing 1–50 of 1,284
+```
+
+## 14. Ticket row
+
+Default columns:
+
+```text
+Priority
+Title
+Customer
+Status
+Assignee
+SLA
+Updated
+```
+
+Optional:
+
+```text
+Ticket ID
+Created
+Category
+```
+
+Visual priority:
+
+```text
+1. Title
+2. SLA
+3. Priority
+4. Customer
+5. Assignee
+6. Metadata
+```
+
+Do not overload the default table.
+
+## 15. Overdue treatment
+
+Use:
+
+```text
+OVERDUE BY 42m
+```
+
+with:
+- danger text
+- small danger indicator
+- subtle danger background where useful
+
+Do not make an entire overdue row bright red.
+
+## 16. Pagination
+
+Pagination is required for large queues.
+
+```text
+Showing 1–50 of 1,284
+
+[ Previous ] 1 2 3 4 5 ... 26 [ Next ]
+```
+
+Rules:
+- order before pagination
+- filter/search before pagination
+- never sort only the current page
+- preserve filters between pages
+- preserve queue semantics on every page
+- default around 50 items per page
+
+## 17. My tickets
+
+Conceptually:
+
+```text
+assignee = currentUser
+```
+
+Use the same queue ordering.
+
+```text
+My tickets
+
+12 assigned to you
+2 overdue
+
+[ Search ] [ Priority ] [ Status ] [ SLA ]
+```
+
+The view changes the dataset, not the sorting rules.
+
+## 18. Overdue view
+
+Conceptually:
+
+```text
+slaDeadline < now
 AND
-Department = Cardiology
-AND
-Last visit >= 01 Sep 2026
+ticket is active
 ```
+
+Example:
+
+```text
+Overdue
+
+7 tickets
+
+URGENT   Laptop won't boot       1h 12m overdue
+URGENT   Client demo issue       24m overdue
+NORMAL   Monitor request          5m overdue
+```
+
+## 19. Unassigned view
+
+Conceptually:
+
+```text
+assignee = null
+```
+
+Example:
+
+```text
+Unassigned
+
+4 tickets
+
+Laptop request
+Monitor request
+VPN access
+Printer issue
+
+[ Assign selected ]
+```
+
+Bulk assignment is useful for a small helpdesk.
+
+## 20. Filters
+
+Primary filters:
+
+```text
+Priority
+Status
+Assignee
+SLA
+```
+
+Optional:
+
+```text
+Customer
+Created date
+Updated date
+```
+
+UI:
+
+```text
+[ Search ] [ Priority ▾ ] [ Status ▾ ] [ Assignee ▾ ] [ SLA ▾ ]
+```
+
+Selected filters become removable chips:
+
+```text
+Priority: Urgent ×
+Assignee: Priya ×
+```
+
+Filtering narrows the dataset without changing ordering semantics.
+
+## 21. Search
+
+Search is a first-class workflow.
 
 Support:
 
-- saved views
-- recent filters
-- clear all
-- filter count
-- URL/shareable filter state where appropriate
-
----
-
-# 14. Record Detail Pattern
-
-Use a consistent record page.
-
 ```text
-← Patients
-
-Rahul Sharma                                      Edit
-Patient ID: PT-10241
-
-[ Overview ] [ Appointments ] [ Billing ] [ Documents ] [ Activity ]
-
-┌─────────────────────────────────────────────────────┐
-│ Personal information                                │
-│                                                     │
-│ Date of birth       12 Jan 2002                     │
-│ Phone               +91 XXXXX XXXXX                 │
-│ Email               rahul@example.com               │
-│ Department          Cardiology                      │
-└─────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────┐
-│ Recent activity                                     │
-│                                                     │
-│ Appointment created                       Today     │
-│ Invoice paid                             Yesterday  │
-│ Record updated                           12 Sep     │
-└─────────────────────────────────────────────────────┘
+Ticket title
+Customer name
+Ticket ID
+Customer email where appropriate
 ```
 
-The detail screen should answer:
+Example:
 
-1. Who/what is this?
-2. What is its current state?
-3. What can I do?
-4. What information matters?
-5. What happened previously?
+```text
+Search: Acme
 
----
+Customers
+  Acme Corporation
 
-# 15. Activity Timeline
+Tickets
+  Laptop won't boot
+  Client demo issue
+  VPN access
+```
 
-Inspired by record-centric products.
+For large datasets:
+- server-side search
+- debounce input
+- case-insensitive
+- partial matches
+- optional match highlighting
+
+The user should not need a ticket ID to find a customer's ticket.
+
+## 22. Search + queue
+
+Search is a filtered view of the same queue.
+
+If:
+
+```text
+A Urgent overdue
+B Normal overdue
+C Urgent 30m remaining
+```
+
+the result remains:
+
+```text
+A
+B
+C
+```
+
+Do not create an independent search sort.
+
+## 23. Ticket detail
+
+Existing component:
+
+```text
+client/src/components/TicketDetail.jsx
+```
+
+Recommended:
+
+```text
+← Queue
+
+[URGENT] Laptop won't boot before client demo
+
+Ticket #TCK-10241
+
+                         [Assign] [Status ▾] [...]
+
+Customer
+Acme Corporation
+
+Assignee
+Priya
+
+Status
+Open
+
+SLA
+OVERDUE BY 42m
+
+────────────────────────────────────────
+
+Description
+
+The laptop does not boot and the client demo
+starts this afternoon.
+
+────────────────────────────────────────
+
+Activity
+
+Priya assigned ticket
+Today 10:12
+
+Ticket created
+Today 08:12
+```
+
+The detail view must answer:
+1. What is this?
+2. Who is it for?
+3. What is its state?
+4. What is its SLA?
+5. Who owns it?
+6. What can I do?
+7. What happened?
+
+## 24. Ticket actions
+
+Primary:
+
+```text
+[ Assign ]
+[ Status ▾ ]
+```
+
+Useful secondary actions:
+
+```text
+[ Change priority ]
+[ ... ]
+```
+
+Keep important actions visible.
+
+## 25. Assignment
+
+```text
+Assignee
+
+[ Priya ▾ ]
+
+Search agents...
+
+○ Priya
+○ Amit
+○ Unassigned
+```
+
+Useful shortcut:
+
+```text
+[ Assign to me ]
+```
+
+Bulk:
+
+```text
+3 tickets selected
+
+[ Assign ]
+[ Change priority ]
+[ Change status ]
+```
+
+## 26. Priority change
+
+```text
+Priority
+
+● Urgent
+○ Normal
+```
+
+Changing priority must immediately cause the ticket to be reconciled with
+the authoritative queue ordering.
+
+## 27. Ticket creation
+
+Existing component:
+
+```text
+client/src/components/CreateTicketModal.jsx
+```
+
+Use a modal.
+
+```text
+Create ticket
+
+Customer
+[ Search customer... ]
+
+Title
+[____________________________]
+
+Description
+[____________________________]
+[____________________________]
+
+Priority
+[ Normal ▾ ]
+
+Assignee
+[ Unassigned ▾ ]
+
+[ Cancel ] [ Create ticket ]
+```
+
+Creation:
+
+```text
+Create
+ ↓
+Calculate SLA deadline
+ ↓
+Persist
+ ↓
+Place ticket in correct queue position
+```
+
+## 28. Ticket status
+
+Initial status model:
+
+```text
+Open
+In Progress
+Waiting
+Resolved
+Closed
+```
+
+Typical flow:
+
+```text
+Open
+ ↓
+In Progress
+ ↓
+Resolved
+ ↓
+Closed
+```
+
+Waiting:
+
+```text
+In Progress
+ ↓
+Waiting
+ ↓
+In Progress
+```
+
+Keep the model simple unless requirements expand.
+
+## 29. Activity timeline
 
 ```text
 Activity
 
-● Invoice paid
-  ₹25,000
-  Today, 10:42 AM
+● Priority changed to Urgent
+  By Priya · 10:42 AM
 
-● Appointment completed
-  Dr. Sharma
-  Yesterday, 4:20 PM
+● Ticket assigned to Priya
+  10:12 AM
 
-● Patient information updated
-  By Admin
-  12 Sep 2026
+● Ticket created
+  08:12 AM
 ```
 
-Use timelines for:
-
-- audit history
-- patient history
-- employee history
-- approval history
-- document changes
-- communication history
-
----
-
-# 16. Drawers
-
-Use drawers for quick contextual work.
+Useful events:
 
 ```text
-                         ┌─────────────────────────────┐
-                         │ Edit Employee           ×   │
-                         ├─────────────────────────────┤
-                         │                             │
-                         │ Name                        │
-                         │ [________________________]  │
-                         │                             │
-                         │ Department                  │
-                         │ [ Engineering ▾ ]           │
-                         │                             │
-                         │ Role                        │
-                         │ [ Engineer ]                 │
-                         │                             │
-                         │ Cancel       Save Changes   │
-                         └─────────────────────────────┘
+created
+assigned
+unassigned
+priority changed
+status changed
+description changed
+resolved
+closed
 ```
 
-Use drawers when:
+## 30. Existing component responsibilities
 
-- the user needs to preserve the underlying context
-- the operation is relatively short
-- the form is not a multi-step workflow
-
-Use a full page for:
-
-- complex forms
-- long workflows
-- reports
-- major configuration
-- multi-step processes
-
----
-
-# 17. Command Palette
-
-Global command/search:
+Project structure:
 
 ```text
-⌘ K
+client/
+├── dist/
+├── node_modules/
+├── src/
+│   ├── components/
+│   │   ├── AgentsList.jsx
+│   │   ├── Badge.jsx
+│   │   ├── CreateTicketModal.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── FilterBar.jsx
+│   │   ├── Pagination.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── TicketDetail.jsx
+│   │   └── TicketQueue.jsx
+│   ├── api.js
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── index.html
+├── package.json
+└── package-lock.json
 
-┌────────────────────────────────────────────┐
-│ Search patients, invoices, employees...    │
-├────────────────────────────────────────────┤
-│ Recent                                     │
-│   Rahul Sharma                             │
-│   Invoice INV-20491                        │
-│                                            │
-│ Actions                                    │
-│   Create patient                           │
-│   Create invoice                           │
-│   Run payroll                              │
-│   Export report                            │
-└────────────────────────────────────────────┘
+server/
+├── node_modules/
+├── routes/
+│   ├── agents.js
+│   └── tickets.js
+├── utils/
+│   └── UrgencyScore.js
+├── data.json
+├── db.js
+├── index.js
+├── seed.js
+├── package.json
+└── package-lock.json
 ```
 
-Must support:
-
-- global search
-- navigation
-- actions
-- recent records
-- keyboard shortcuts
-
-Keyboard:
+Responsibilities:
 
 ```text
-Cmd/Ctrl + K   Global command palette
-Cmd/Ctrl + /   Search
-Esc            Close
-↑ ↓            Navigate
-Enter          Select
+App.jsx
+  application composition / routing
+
+Sidebar.jsx
+  navigation, active state, queue shortcuts
+
+Dashboard.jsx
+  lightweight operational overview
+
+TicketQueue.jsx
+  ordered queue rendering and selection
+
+FilterBar.jsx
+  search and filters
+
+Pagination.jsx
+  pagination controls
+
+TicketDetail.jsx
+  ticket record and actions
+
+CreateTicketModal.jsx
+  ticket creation
+
+AgentsList.jsx
+  agents / assignment
+
+Badge.jsx
+  priority, status and SLA presentation
+
+api.js
+  API communication
+
+index.css
+  design tokens and global styles
+
+main.jsx
+  application bootstrap
 ```
 
----
+Do not put queue business rules into visual components.
 
-# 18. Dashboard
+## 31. UrgencyScore.js
 
-Dashboard should be operational, not decorative.
-
-Recommended structure:
+Existing:
 
 ```text
-Dashboard
-
-Good morning, Admin
-
-┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
-│ Patients │ │ Revenue  │ │ Pending  │ │ Tasks    │
-│ 1,248     │ │ ₹24.5M   │ │ 128      │ │ 42       │
-└──────────┘ └──────────┘ └──────────┘ └──────────┘
-
-Recent activity                    Tasks requiring attention
-
-┌─────────────────────────┐       ┌───────────────────────┐
-│ Patient admitted        │       │ 8 invoices pending    │
-│ Invoice generated       │       │ 3 approvals waiting   │
-│ Employee added          │       │ 2 stock alerts        │
-└─────────────────────────┘       └───────────────────────┘
-
-Operational report
-
-┌─────────────────────────────────────────────────────────┐
-│ Chart / table / trend                                  │
-└─────────────────────────────────────────────────────────┘
+server/utils/UrgencyScore.js
 ```
 
-### Dashboard rules
+The product requirement is a deterministic ordering rule, not a magic score.
 
-- Maximum 4–6 KPI cards above the fold.
-- Every KPI must answer a business question.
-- Include "needs attention" items.
-- Prefer actionable data over vanity metrics.
-- Allow role-based dashboards.
-
----
-
-# 19. Role-Based Home
-
-Different users should see different priorities.
-
-### Hospital receptionist
+Prefer logic equivalent to:
 
 ```text
-Appointments
-Patients
-Admissions
-Payments
-Tasks
+isOverdue
+priorityRank
+slaDeadline
+createdAt
+id
 ```
 
-### Doctor
+If the utility is retained, its result must produce exactly the documented
+ordering.
+
+Do not hide business-critical queue semantics behind unexplained numeric
+weights.
+
+## 32. API layer
+
+Existing:
 
 ```text
-Today's appointments
-Patient queue
-Patient records
-Prescriptions
-Clinical tasks
+client/src/api.js
 ```
 
-### School administrator
+Recommended abstraction:
 
 ```text
-Students
-Teachers
-Attendance
-Fees
-Exams
-Reports
+getTickets(params)
+getTicket(id)
+createTicket(data)
+updateTicket(id, data)
+getAgents()
+getCustomers()
 ```
 
-### Finance manager
+Example:
 
 ```text
-Invoices
-Payments
-Expenses
-Payroll
-Approvals
-Reports
+GET /tickets
+  ?page=1
+  &limit=50
+  &priority=urgent
+  &assignee=agent-priya
+  &status=open
+  &search=acme
 ```
 
-Same design system. Different information priority.
+The API should return correctly ordered results.
 
----
+## 33. Server routes
 
-# 20. Status System
+Existing:
 
-Statuses should be standardized.
+```text
+server/routes/agents.js
+server/routes/tickets.js
+```
+
+Initial ticket endpoints:
+
+```text
+GET    /tickets
+GET    /tickets/:id
+POST   /tickets
+PATCH  /tickets/:id
+```
+
+Possible later endpoints:
+
+```text
+POST /tickets/:id/assign
+POST /tickets/:id/status
+POST /tickets/:id/priority
+```
+
+Keep the API simple until separate operations are actually needed.
+
+## 34. Ticket data model
+
+Minimum:
 
 ```yaml
-status:
-  neutral:
-    - Draft
-    - Archived
-    - Inactive
-
-  info:
-    - Scheduled
-    - Processing
-    - Under Review
-
-  success:
-    - Active
-    - Completed
-    - Paid
-    - Approved
-
-  warning:
-    - Pending
-    - Expiring
-    - Needs Attention
-
-  danger:
-    - Failed
-    - Rejected
-    - Overdue
-    - Cancelled
+Ticket:
+  id:
+  title:
+  description:
+  customer:
+  priority:
+  status:
+  assignee:
+  createdAt:
+  updatedAt:
+  slaDeadline:
 ```
 
-Status badge:
+Optional later:
 
 ```text
-● Active
-● Pending
-● Overdue
+resolvedAt
+closedAt
+category
 ```
 
-Avoid unnecessary status colors.
+Example:
 
----
-
-# 21. Notifications
-
-Notification center:
-
-```text
-Notifications
-
-Today
-
-● Invoice #INV-20491 was paid
-  5 min ago
-
-● Approval required: Purchase Order #PO-104
-  22 min ago
-
-Earlier
-
-● Employee document expires in 30 days
-  Yesterday
+```json
+{
+  "id": "TCK-10241",
+  "title": "Laptop won't boot before client demo",
+  "description": "The laptop does not boot.",
+  "customer": {
+    "id": "CUS-1001",
+    "name": "Acme Corporation"
+  },
+  "priority": "urgent",
+  "status": "open",
+  "assignee": "agent-priya",
+  "createdAt": "2026-09-16T08:12:00",
+  "updatedAt": "2026-09-16T09:31:00",
+  "slaDeadline": "2026-09-16T10:12:00"
+}
 ```
 
-Notifications must be:
+## 35. Queue reactivity
 
-- actionable
-- grouped
-- dismissible
-- timestamped
-- linked to the relevant record
-
-Avoid notification spam.
-
----
-
-# 22. Search
-
-Search should operate across the organization.
-
-Search:
+Queue position can change when:
 
 ```text
-Rahul Sharma
+priority changes
+status changes
+SLA state changes
+SLA deadline changes
+time crosses the SLA deadline
 ```
 
-Results:
+Example:
 
 ```text
-People
-  Rahul Sharma
-  Employee · Engineering
-
-Patients
-  Rahul Sharma
-  Patient · Cardiology
-
-Invoices
-  INV-20491
-  Rahul Sharma
+Normal
+3h remaining
+    ↓
+Priority changed to Urgent
+    ↓
+Reconcile with queue comparator
+    ↓
+Ticket moves to correct position
 ```
 
-Search should support:
-
-- exact matches
-- partial matches
-- IDs
-- names
-- email
-- phone where permitted
-- module filtering
-- recent searches
-
----
-
-# 23. Empty States
-
-Bad:
+When a ticket crosses its SLA deadline:
 
 ```text
-Nothing here.
+SLA deadline reached
+    ↓
+Ticket becomes overdue
+    ↓
+Ticket moves into overdue group
 ```
 
-Good:
+Do not require a full page reload for normal updates.
+
+## 36. Real-time behavior
+
+If real-time updates are added:
 
 ```text
-No patients found
-
-Try changing your filters or create a new patient.
-
-[ + New Patient ]
+TICKET_UPDATED
+    ↓
+Update local ticket
+    ↓
+Reconcile queue position
+    ↓
+Move minimally
 ```
 
-Empty states should explain:
+Avoid repeatedly jumping the user's screen while they are reading.
 
-1. What is empty?
-2. Why might it be empty?
-3. What should the user do next?
-
----
-
-# 24. Loading States
-
-Use skeletons for predictable content.
+A non-disruptive option:
 
 ```text
-┌───────────────────────────────────────┐
-│ ███████████                           │
-│                                       │
-│ █████████████████████████             │
-│ ███████████████████                   │
-└───────────────────────────────────────┘
+Queue updated · 2 tickets moved
+[ Refresh position ]
+```
+
+## 37. Empty states
+
+All tickets:
+
+```text
+No tickets
+
+There are no tickets matching your current filters.
+
+[ Clear filters ]
+```
+
+My tickets:
+
+```text
+No tickets assigned to you
+
+You're currently not assigned any tickets.
+```
+
+Overdue:
+
+```text
+No overdue tickets
+
+Everything is currently within its response target.
+```
+
+Unassigned:
+
+```text
+No unassigned tickets
+
+All active tickets have an owner.
+```
+
+## 38. Loading states
+
+Use skeleton rows.
+
+```text
+Queue
+
+┌──────────────────────────────────────────────────────┐
+│ ███████████████   █████████   ████████               │
+│ ███████████████   █████████   ████████               │
+│ ███████████████   █████████   ████████               │
+│ ███████████████   █████████   ████████               │
+└──────────────────────────────────────────────────────┘
 ```
 
 For actions:
@@ -1063,264 +1198,78 @@ For actions:
 [ Saving... ]
 ```
 
-Never leave the user guessing whether an operation is happening.
+## 39. Error states
 
----
-
-# 25. Error States
-
-Errors should be specific.
-
-Bad:
+Queue:
 
 ```text
-Something went wrong.
-```
+Unable to load tickets
 
-Better:
-
-```text
-Unable to save employee
-
-The email address is already associated with another employee.
-
-[ Review employee ]
-```
-
-System error:
-
-```text
-Unable to load patients
-
-Check your connection and try again.
+The ticket queue could not be loaded.
 
 [ Retry ]
 ```
 
----
-
-# 26. Confirmation Dialogs
-
-Only use confirmation dialogs when the action is consequential.
+Ticket:
 
 ```text
-Delete employee?
+Unable to load ticket
 
-This will remove the employee from active records.
-Historical payroll information will be preserved.
+The ticket may have been removed or the server is
+temporarily unavailable.
 
-[ Cancel ] [ Delete Employee ]
+[ Back to queue ] [ Retry ]
 ```
 
-Avoid confirmation for harmless actions such as:
+Errors should explain the problem and next action.
 
-- opening
-- filtering
-- selecting
-- ordinary navigation
+## 40. Confirmation
 
----
-
-# 27. Forms
-
-Forms should be organized into logical sections.
+Use confirmation only for consequential actions.
 
 ```text
-Create Employee
+Delete ticket?
 
-Basic information
-────────────────────────────
-First name       Last name
-[___________]    [___________]
+This will permanently remove the ticket.
 
-Email
-[____________________________]
-
-Employment
-────────────────────────────
-Department       Role
-[___________]    [___________]
-
-Start date
-[___________]
-
-Documents
-────────────────────────────
-[ Upload document ]
-
-                    [Cancel] [Create Employee]
+[ Cancel ] [ Delete ticket ]
 ```
 
-Rules:
+Do not confirm harmless navigation, filtering, searching, or selection.
 
-- Group related fields.
-- Use two columns on desktop when appropriate.
-- One column on mobile.
-- Mark required fields clearly.
-- Keep labels persistent.
-- Avoid excessively long single-page forms.
-- Use multi-step forms for genuinely complex workflows.
+## 41. Dashboard
 
----
+Dashboard is supporting context, not the main product.
 
-# 28. Multi-Step Workflows
-
-Use a stepper for complex processes.
+Useful:
 
 ```text
-Create Purchase Order
-
-1. Supplier  →  2. Items  →  3. Review  →  4. Submit
-
-Current: Items
-────────────────────────────
-
-Product       Qty       Price
-Laptop        10        ₹80,000
-Monitor       10        ₹15,000
-
-[Back]                         [Continue]
+Open tickets
+Overdue
+My tickets
+Unassigned
+Next ticket
 ```
 
-Always show:
-
-- current step
-- completed steps
-- remaining steps
-- ability to go back when safe
-
----
-
-# 29. Approval Workflow
-
-Enterprise systems need explicit workflow states.
+Example:
 
 ```text
-Draft
-  ↓
-Submitted
-  ↓
-Under Review
-  ↓
-Approved
-  ↓
-Completed
+Open          128
+Overdue         7
+My tickets     12
+Unassigned      4
+
+Next ticket
+Laptop won't boot
+URGENT
+OVERDUE BY 42m
+
+[ Open ticket ]
 ```
 
-Rejected:
+Do not add unrelated business analytics.
 
-```text
-Submitted
-    ↓
-Under Review
-    ↓
-Rejected
-    ↓
-Draft / Resubmission
-```
-
-Show:
-
-- who submitted
-- who approved
-- timestamp
-- comments
-- current state
-- next required action
-
----
-
-# 30. Audit Log
-
-Every important enterprise action should be traceable.
-
-```text
-Audit log
-
-User             Action                    Time
-Admin            Updated salary           10:42
-Finance          Approved invoice         09:30
-HR               Added employee            09:12
-```
-
-For sensitive modules, preserve:
-
-- actor
-- action
-- timestamp
-- record
-- previous value
-- new value
-- source/context where appropriate
-
----
-
-# 31. Reports
-
-Reports should prioritize readability and exportability.
-
-```text
-Revenue Report
-
-Date range       [ Sep 1 – Sep 16 ]
-Department       [ All ▾ ]
-
-[ Apply ]
-
-Revenue                    ₹24,580,000
-Outstanding                 ₹2,420,000
-Collected                   ₹22,160,000
-
-────────────────────────────────────────
-
-Date       Revenue       Expenses       Net
-Sep 01     ₹...          ₹...           ₹...
-Sep 02     ₹...          ₹...           ₹...
-
-[ Export CSV ] [ Export PDF ]
-```
-
-Rules:
-
-- Table first when exact values matter.
-- Chart second when trends matter.
-- Provide date ranges.
-- Provide filters.
-- Make exports obvious.
-- Don't force users to interpret a chart to obtain a number.
-
----
-
-# 32. Data Visualization
-
-Use charts only when they answer a useful question.
-
-Good:
-
-- revenue over time
-- attendance trend
-- patient volume
-- inventory movement
-- expense distribution
-
-Bad:
-
-- decorative pie chart with no action
-- chart that duplicates a simple number
-- excessive chart colors
-
-Chart principles:
-
-- neutral grid
-- restrained palette
-- clear labels
-- accessible contrast
-- tooltips
-- table alternative for exact data
-
----
-
-# 33. Responsive Design
+## 42. Responsive behavior
 
 Breakpoints:
 
@@ -1330,750 +1279,296 @@ breakpoints:
   mobile-large: 640px
   tablet: 768px
   desktop: 1024px
-  desktop-large: 1280px
+  large: 1280px
   wide: 1440px
 ```
 
-### Desktop
-
-- Persistent sidebar.
-- Multi-column layouts.
-- Dense tables.
-- Keyboard-first interaction.
-
-### Tablet
-
-- Collapsible sidebar.
-- Reduced table columns.
-- Two-column forms where space allows.
-
-### Mobile
-
-- Bottom sheet/drawer where appropriate.
-- Single-column forms.
-- Card/list transformation for tables.
-- Horizontal scrolling only when genuinely necessary.
-- Large touch targets.
-- Simplified navigation.
-
-Minimum touch target:
-
-```text
-44 × 44px
-```
-
----
-
-# 34. Table Mobile Transformation
-
-Do not shrink a desktop table until it becomes unusable.
-
 Desktop:
+- persistent sidebar
+- full queue table
+- keyboard-first interaction
 
-```text
-Name | Department | Status | Manager | Joined | Salary
-```
+Tablet:
+- collapsible sidebar
+- reduced columns
 
 Mobile:
+- ticket cards
+- single-column layout
+- drawer/detail view
+- preserve the exact queue ordering
+
+Do not simply shrink the desktop table.
+
+## 43. Mobile ticket card
 
 ```text
-Rahul Sharma
-Engineering · Software Engineer
-
-Active
-Joined 12 Aug 2026
-
-Salary: ₹...
-Manager: ...
+┌───────────────────────────────┐
+│ URGENT · OVERDUE              │
+│                               │
+│ Laptop won't boot             │
+│ Acme Corporation              │
+│                               │
+│ Priya                         │
+│ Overdue by 42m                │
+└───────────────────────────────┘
 ```
 
-Secondary information can move into a detail view.
-
----
-
-# 35. Icons
-
-Recommended icon style:
-
-- Lucide-style
-- 16–20px standard
-- 1.5–2px stroke
-- consistent optical size
-
-Use icons for:
-
-- navigation
-- actions
-- status reinforcement
-- search
-- filtering
-- sorting
-
-Do not replace text labels with icons when the meaning is ambiguous.
-
----
-
-# 36. Motion
-
-Motion should communicate state, not decorate the interface.
-
-Use:
-
-- 120–180ms micro-interactions
-- 180–250ms drawers
-- subtle hover transitions
-- skeleton transitions
-- menu transitions
-
-Avoid:
-
-- large entrance animations
-- bouncing buttons
-- unnecessary parallax
-- slow transitions in frequently used workflows
-
-Respect:
+Primary mobile information:
 
 ```text
-prefers-reduced-motion
+Priority
+Title
+Customer
+SLA
+Assignee
 ```
 
----
-
-# 37. Accessibility
+## 44. Accessibility
 
 Target WCAG 2.2 AA.
 
 Requirements:
+- keyboard navigation
+- visible focus
+- semantic HTML
+- accessible dialogs
+- accessible table headers
+- screen-reader labels
+- no color-only state
+- minimum 44px touch target
+- clear form errors
+- logical tab order
+- focus restoration after modal close
 
-- Keyboard navigation.
-- Visible focus.
-- Screen-reader labels.
-- Semantic HTML.
-- Sufficient contrast.
-- No color-only state.
-- 44px touch targets.
-- Accessible dialogs.
-- Accessible dropdowns.
-- Accessible tables.
-- Form error association.
-- Focus management after modal/drawer actions.
+Never represent urgency only with a red dot.
 
-Focus style:
-
-```text
-2px primary outline
-+ subtle offset
-```
-
----
-
-# 38. Permissions
-
-The design must visually communicate permissions.
-
-Example:
+Use:
 
 ```text
-Invoice
-
-Amount      ₹250,000
-Status      Approved
-
-[ View ]
-
-Edit        Disabled
-Delete      Disabled
+URGENT
 ```
 
-Do not hide important information about why an action is unavailable when a clear explanation is safe.
+plus visual reinforcement.
 
-Permission model:
-
-```text
-Organization
-  ↓
-Role
-  ↓
-Module
-  ↓
-Resource
-  ↓
-Action
-```
-
-Actions:
-
-```text
-view
-create
-edit
-delete
-approve
-export
-manage
-```
-
----
-
-# 39. Organization / Workspace Switching
-
-For multi-tenant ERP:
-
-```text
-┌──────────────────────────────┐
-│ ACME Hospital                │
-│ Hospital Group               │
-├──────────────────────────────┤
-│ ✓ Main Hospital              │
-│   City Clinic                │
-│   Research Center            │
-├──────────────────────────────┤
-│ + Add organization           │
-└──────────────────────────────┘
-```
-
-Never make users wonder which organization they are modifying.
-
-The active organization should always be visible.
-
----
-
-# 40. Universal Components
-
-Build these components first:
-
-```text
-AppShell
-Sidebar
-TopBar
-Breadcrumbs
-CommandPalette
-Search
-Button
-IconButton
-Input
-Textarea
-Select
-Combobox
-DatePicker
-DateRangePicker
-Checkbox
-Radio
-Switch
-Tabs
-Badge
-StatusBadge
-Tooltip
-Popover
-Dropdown
-Menu
-Modal
-Drawer
-Toast
-Alert
-Table
-DataTable
-Pagination
-FilterBar
-FilterBuilder
-EmptyState
-Skeleton
-ErrorState
-Timeline
-Avatar
-AvatarGroup
-Card
-StatCard
-Chart
-FileUploader
-Stepper
-AuditLog
-ActivityFeed
-```
-
----
-
-# 41. Page Templates
-
-Standardize these templates.
-
-## List page
-
-```text
-Breadcrumb
-Page title
-Description
-Primary action
-
-Search + filters + views
-
-Data table
-
-Pagination
-```
-
-## Detail page
-
-```text
-Breadcrumb
-Record header
-Actions
-
-Tabs
-
-Summary
-Sections
-Activity
-Related records
-```
-
-## Form page
-
-```text
-Breadcrumb
-Title
-
-Form sections
-
-Footer actions
-```
-
-## Dashboard
-
-```text
-Greeting / context
-
-KPIs
-
-Needs attention
-
-Activity
-
-Reports
-```
-
-## Report
-
-```text
-Title
-Date range
-Filters
-Summary metrics
-Chart
-Table
-Export
-```
-
----
-
-# 42. Information Density
-
-ERP users frequently process hundreds or thousands of records.
-
-Default density should therefore be higher than a consumer application.
+## 45. Keyboard UX
 
 Recommended:
 
 ```text
-Consumer app:
-Large spacing
-Large cards
-Few data points
-
-ERP:
-Moderate spacing
-Compact controls
-Many data points
-Strong alignment
-Fast scanning
+Ctrl/Cmd + K    Global search / command palette
+/               Focus search
+C               Create ticket
+Esc             Close
+Enter           Open/select
+↑ / ↓           Navigate queue
 ```
 
-The goal is not maximum density.
+Shortcuts accelerate expert users but must never be required.
 
-The goal is:
+## 46. Performance
 
-> **Maximum useful information per unit of attention.**
+Large queues require:
 
----
+- server-side pagination
+- server-side search where appropriate
+- server-side filtering where appropriate
+- server-side authoritative ordering
+- no loading of every ticket into the browser
+- no thousands of unnecessary DOM nodes
+- debounced search
+- cached stable agent/customer lists where useful
 
-# 43. Keyboard-First UX
+## 47. Queue invariants
 
-Support common shortcuts:
+These should be tested independently of the UI.
 
 ```text
-Cmd/Ctrl + K       Command palette
-Cmd/Ctrl + /       Search
-C                  Create
-E                  Edit
-Esc                Close
-Enter              Confirm/select
-↑ ↓                Navigate
-J / K              Move through lists where appropriate
+1. Overdue active tickets appear before non-overdue active tickets.
+2. Urgent precedes Normal within the same SLA state.
+3. Deadline determines order within equivalent priority/SLA groups.
+4. Filtering never changes ordering semantics.
+5. Pagination never changes ordering semantics.
+6. My tickets uses the same ordering.
+7. Overdue contains only active overdue tickets.
 ```
 
-Don't force keyboard shortcuts onto every action. They should accelerate expert users without confusing beginners.
+## 48. Minimum queue test cases
 
----
-
-# 44. Notifications and To-Dos
-
-Create an explicit "Needs attention" model.
+Test:
 
 ```text
-Needs attention
-
-8 invoices overdue                 →
-3 approvals pending                →
-2 inventory items below threshold  →
-1 employee document expiring       →
+1. Urgent overdue vs normal overdue
+2. Normal overdue vs urgent within SLA
+3. Urgent within SLA vs normal within SLA
+4. Identical SLA deadlines
+5. Newly created urgent ticket
+6. Ticket crossing SLA deadline
+7. Overdue ticket becoming resolved
+8. Assignment to current user
+9. Assignee filtering
+10. Priority filtering
+11. Search by customer name
+12. Pagination across ordered results
 ```
 
-This is more useful than filling the dashboard with decorative metrics.
-
----
-
-# 45. Contextual Actions
-
-Actions should live close to the record they affect.
-
-Good:
+Expected example:
 
 ```text
-Employee
-Rahul Sharma                         [Edit]
+A  Urgent  overdue 60m
+B  Normal  overdue 10m
+C  Urgent  30m remaining
+D  Normal  2h remaining
+
+Expected:
+A
+B
+C
+D
 ```
 
-Good:
+## 49. CSS architecture
 
-```text
-Invoice #INV-20491
-
-[ Download ] [ Send ] [ Mark as Paid ] [ ... ]
-```
-
-Avoid:
-
-```text
-Top navigation
-    ↓
-Actions
-    ↓
-Find the record
-```
-
----
-
-# 46. Design Tokens
-
-The application should be implemented with tokens rather than hard-coded styles.
-
-Example:
+Use CSS variables.
 
 ```css
---color-bg-canvas
---color-bg-surface
---color-bg-elevated
+:root {
+  --color-bg-canvas: #f7f8fa;
+  --color-bg-surface: #ffffff;
+  --color-bg-subtle: #f9fafb;
 
---color-text-primary
---color-text-secondary
---color-text-tertiary
+  --color-text-primary: #17181a;
+  --color-text-secondary: #5f6368;
+  --color-text-tertiary: #7b8088;
 
---color-border
---color-border-strong
+  --color-border: #e3e5e8;
+  --color-border-strong: #d0d4d9;
 
---color-brand
---color-brand-hover
+  --color-brand: #5e6ad2;
+  --color-brand-hover: #4f5bc4;
 
---color-success
---color-warning
---color-danger
---color-info
+  --color-success: #16803c;
+  --color-warning: #a15c00;
+  --color-danger: #c62828;
+  --color-info: #1769aa;
 
---radius-sm
---radius-md
---radius-lg
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
 
---space-1
---space-2
---space-3
---space-4
---space-6
---space-8
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+}
 ```
 
-Every component should consume tokens.
+All components should consume tokens.
 
----
-
-# 47. Domain Neutrality
-
-The core UI should not contain hospital-specific assumptions.
-
-Use generic concepts:
-
-```text
-Person
-Organization
-Department
-Location
-Record
-Appointment
-Task
-Document
-Transaction
-Payment
-Approval
-Asset
-Inventory
-Workflow
-Activity
-```
-
-Domain modules can map these concepts:
-
-```text
-Hospital:
-Person → Patient
-Appointment → Medical Appointment
-
-School:
-Person → Student
-Appointment → Parent Meeting
-
-Office:
-Person → Employee
-Appointment → Meeting
-```
-
-This keeps the design system reusable.
-
----
-
-# 48. Design Rules by Reference
-
-## Linear influence
-
-Use for:
-
-- compact navigation
-- keyboard interaction
-- issue/list patterns
-- hierarchy
-- restrained accent usage
-- fast workflows
-
-Do not copy:
-
-- marketing-site proportions
-- huge hero typography
-- dark-only product assumptions
-
-## Stripe influence
-
-Use for:
-
-- financial records
-- checkout-like workflows
-- forms
-- billing
-- invoices
-- transactional confidence
-- clean data presentation
-
-## Supabase influence
-
-Use for:
-
-- admin panels
-- technical tables
-- settings
-- data management
-- dense layouts
-
-## Vercel influence
-
-Use for:
-
-- minimal surfaces
-- typography
-- spacing discipline
-- restrained visual hierarchy
-
-## Notion influence
-
-Use for:
-
-- documents
-- flexible records
-- nested content
-- editable metadata
-- contextual information
-
-## Slack influence
-
-Use for:
-
-- workspace switching
-- notification center
-- activity
-- contextual navigation
-- communication surfaces
-
-## Figma influence
-
-Use for:
-
-- complex editors
-- side panels
-- property panels
-- multi-selection
-- advanced interaction states
-
-## Intercom influence
-
-Use for:
-
-- customer/person records
-- timelines
-- tasks
-- conversations
-- contextual actions
-
-## Apple influence
-
-Use for:
-
-- simplicity
-- typography
-- accessibility
-- polished transitions
-- restraint
-
----
-
-# 49. What NOT to Do
-
-Do not:
-
-- Make every page a dashboard.
-- Put every metric in a card.
-- Use a different design language for every module.
-- Use five primary colors.
-- Hide important actions behind three menus.
-- Build giant forms without sections.
-- Make tables unreadably dense.
-- Make tables excessively spacious.
-- Use placeholder text as labels.
-- Use color alone for status.
-- Overuse gradients.
-- Overuse glassmorphism.
-- Use huge rounded rectangles everywhere.
-- Animate routine actions excessively.
-- Make mobile a scaled-down desktop.
-- Create custom UI for every CRUD screen.
-- Sacrifice accessibility for visual style.
-- Copy a consumer app's interface directly into an enterprise workflow.
-
----
-
-# 50. Recommended Component Priority
+## 50. Implementation order
 
 Build in this order:
 
 ```text
-Phase 1 — Foundation
-├── Tokens
-├── Typography
-├── Colors
-├── Icons
-├── Buttons
-├── Inputs
-└── Layout
+Phase 1 — Correctness
+  Ticket model
+  SLA calculation
+  Queue comparator
+  Pagination
+  GET /tickets
 
-Phase 2 — Navigation
-├── App shell
-├── Sidebar
-├── Top bar
-├── Breadcrumbs
-├── Workspace switcher
-└── Command palette
+Phase 2 — Queue UI
+  TicketQueue
+  FilterBar
+  Pagination
+  Badge
+  Sidebar
 
-Phase 3 — Data
-├── Data table
-├── Search
-├── Filters
-├── Pagination
-├── Sorting
-└── Saved views
+Phase 3 — Ticket workflows
+  TicketDetail
+  CreateTicketModal
+  Assignment
+  Priority change
+  Status change
 
-Phase 4 — Records
-├── Detail page
-├── Tabs
-├── Activity timeline
-├── Related records
-└── Audit log
+Phase 4 — Search
+  Ticket search
+  Customer search
 
-Phase 5 — Workflow
-├── Forms
-├── Drawers
-├── Modals
-├── Stepper
-├── Approval flow
-└── Notifications
+Phase 5 — Operational dashboard
+  Open
+  Overdue
+  My tickets
+  Unassigned
+  Next ticket
 
-Phase 6 — Analytics
-├── KPI
-├── Charts
-├── Reports
-└── Export
-
-Phase 7 — Enterprise
-├── Permissions
-├── Organizations
-├── Roles
-├── Audit
-└── Settings
+Phase 6 — Polish
+  Loading
+  Empty states
+  Error states
+  Keyboard shortcuts
+  Accessibility
+  Responsive behavior
 ```
 
----
+Do not spend significant effort polishing the dashboard before queue ordering
+is correct.
 
-# 51. Golden Rule
+## 51. Do
 
-When deciding between two designs, ask:
+- Make the queue the primary screen.
+- Make ordering deterministic.
+- Put overdue active tickets first.
+- Make SLA state obvious.
+- Keep My tickets one click away.
+- Keep Overdue one click away.
+- Keep Unassigned one click away.
+- Search by customer name.
+- Apply ordering before pagination.
+- Keep filters from changing ordering semantics.
+- Make assignment fast.
+- Reconcile the queue after mutations.
+- Test the comparator independently.
+- Keep business logic outside visual components.
+
+## 52. Don't
+
+- Do not sort only the current frontend page.
+- Do not duplicate the queue algorithm in multiple components.
+- Do not use unexplained urgency weights.
+- Do not allow non-overdue active tickets above overdue active tickets.
+- Do not hide SLA information only in ticket detail.
+- Do not make the dashboard more important than the queue.
+- Do not make every metric a card.
+- Do not use color as the only urgency indicator.
+- Do not overload the default table.
+- Do not require full page reloads after ordinary updates.
+- Do not turn this project into an ERP.
+- Do not add unrelated modules without a product requirement.
+
+## 53. Final UX loop
 
 ```text
-Can the user find the information?
-        ↓
-Can the user understand the state?
-        ↓
-Can the user perform the action?
-        ↓
-Can the user verify what happened?
+Open Auriga
+    ↓
+See ordered queue
+    ↓
+Top ticket is clearly the most pressing
+    ↓
+Open ticket
+    ↓
+Understand customer + issue + priority + SLA
+    ↓
+Assign / update / resolve
+    ↓
+Return to queue
+    ↓
+Next pressing ticket is on top
 ```
 
-If yes, the design is doing its job.
+## 54. Final rule
 
-The ERP should feel like:
-
-```text
-Linear's focus
-        +
-Stripe's trust
-        +
-Supabase's data density
-        +
-Vercel's restraint
-        +
-Notion's flexibility
-        +
-Slack's workspace model
-        +
-Figma's interaction depth
-        +
-Intercom's record workflows
-        +
-Apple's polish
-```
-
-The final product should **not visually imitate any one of these applications**. It should use their strongest interaction principles to create a consistent ERP-specific system.
+> **The queue is the product. Everything else exists to help the agent
+> understand, filter, act on, and return to that queue.**
